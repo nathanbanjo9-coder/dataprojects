@@ -1,0 +1,421 @@
+do it with this index this is the completed one. <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nathan Banjo | Data Analyst & BI Specialist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-overlay: rgba(0, 0, 0, 0.88);
+      --card-white: #ffffff;
+      --accent-green: #30d158;
+      --text-secondary: #a1a1a6;
+      --text-dark: #1d1d1f;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --maxw: 1400px;
+      --shadow: 0 16px 35px rgba(0,0,0,0.35);
+      --shadow-hover: 0 22px 50px rgba(48, 209, 88, 0.18);
+    }
+
+    body{
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #fff;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Navigation --- */
+    #header{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header-content{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 2rem;
+      gap: 1.5rem;
+    }
+
+    .logo h1{ font-size: 1.05rem; font-weight: 650; margin: 0; letter-spacing: -0.01rem; }
+    nav ul{ display: flex; list-style: none; gap: 1.6rem; margin: 0; padding: 0; }
+    nav a{
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      transition: color 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    nav a:hover{ color: #fff; }
+
+    /* --- Hero --- */
+    #intro{
+      padding: 11.5rem 2rem 2.25rem;
+      text-align: center;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    #intro h2{
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.06rem;
+      margin: 0;
+      line-height: 1.02;
+      text-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    }
+    #intro p{
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      margin-top: 1.2rem;
+      margin-inline: auto;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .hero-actions{
+      margin-top: 1.35rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .pill{
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 650;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .pill:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.09); }
+    .pill.primary{
+      background: var(--accent-green);
+      border-color: transparent;
+      color: #000;
+    }
+    .pill.primary:hover{ filter: brightness(0.98); }
+
+    /* --- Project Grid (4 cards on one row) --- */
+    .grid{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 1.75rem 2rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.6rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1200px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px){
+      .grid{ grid-template-columns: 1fr; }
+      #intro h2{ font-size: 2.5rem; }
+      .header-content{ padding-inline: 1.25rem; }
+    }
+
+    .feature{
+      background: var(--card-white);
+      border-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      color: var(--text-dark);
+      height: 100%;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .feature:hover{
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .img-container{
+      width: 100%;
+      height: 210px;
+      background: #fbfbfd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      box-sizing: border-box;
+    }
+
+    .feature img{ max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .content{ padding: 1.35rem 1.65rem; flex-grow: 1; }
+    .badge{
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--accent-green);
+      text-transform: uppercase;
+      letter-spacing: 0.12rem;
+      margin-bottom: 0.6rem;
+      display: inline-flex;
+      font-weight: 700;
+    }
+    .content h3{ font-size: 1.25rem; margin: 0 0 0.75rem; font-weight: 800; letter-spacing: -0.01rem; }
+    .content p{ font-size: 0.92rem; color: #424245; line-height: 1.65; margin: 0; }
+
+    /* --- Buttons (kept minimal) --- */
+    .card-actions{
+      padding: 0 1.65rem 1.65rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-skill{
+      background: #f5f5f7;
+      color: var(--text-dark);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 750;
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .btn-skill:hover{ background: #e8e8ed; transform: translateY(-1px); }
+    .btn-main{
+      background: #1d1d1f;
+      color: #fff;
+      grid-column: span 2;
+      padding: 12px;
+      border-color: transparent;
+    }
+    .btn-main:hover{ background: #000; }
+
+    /* --- Expertise / Toolbox --- */
+    #toolbox{
+      max-width: 1200px;
+      margin: 5.2rem auto 0;
+      text-align: center;
+      padding: 0 2rem;
+    }
+    #toolbox h3{
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: -0.02rem;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .toolbox-grid{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-top: 2.4rem;
+    }
+    @media (max-width: 900px){ .toolbox-grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px){ .toolbox-grid{ grid-template-columns: 1fr; } }
+
+    .tool-card{
+      background: rgba(255,255,255,0.06);
+      padding: 1.9rem 1.25rem;
+      border-radius: 22px;
+      border: 0.5px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .tool-card i{ font-size: 1.9rem; color: var(--accent-green); margin-bottom: 0.9rem; }
+    .tool-card h4{ margin: 0; font-weight: 700; font-size: 0.95rem; color: #fff; }
+    .tool-card p{
+      margin: .55rem 0 0;
+      font-size: .85rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+
+    /* --- Footer --- */
+    footer{ padding: 6.5rem 2rem 7rem; text-align: center; }
+    footer h2{
+      font-size: 2.3rem;
+      margin: 0 0 2.4rem;
+      letter-spacing: -0.03rem;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .hire-me{
+      background: var(--accent-green);
+      color: #000;
+      padding: 1.15rem 3.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      transition: var(--transition);
+    }
+    .hire-me:hover{ transform: translateY(-2px); filter: brightness(0.98); }
+
+    /* Small helper */
+    .muted-link{ color: rgba(255,255,255,0.75); text-decoration: none; }
+    .muted-link:hover{ color: #fff; }
+  </style>
+</head>
+
+<body>
+
+<header id="header">
+  <div class="header-content">
+    <div class="logo"><h1>Nathan Banjo</h1></div>
+    <nav>
+      <ul>
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#toolbox">Expertise</a></li>
+        <li><a href="mailto:nathanbanjo9@gmail.com">Contact</a></li>
+        <li>
+          <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+            LinkedIn
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="intro">
+    <h2>Strategic Intelligence.</h2>
+    <p>I build end-to-end analytics that turn complex data into executive decisions — across SQL, Excel, Tableau, and Power BI.</p>
+
+    <div class="hero-actions">
+      <a class="pill primary" href="#projects"><i class="fas fa-briefcase"></i> View Projects</a>
+      <a class="pill" href="mailto:nathanbanjo9@gmail.com"><i class="fas fa-envelope"></i> Email Me</a>
+      <a class="pill" href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a>
+    </div>
+  </section>
+
+  <div class="grid" id="projects">
+
+    <!-- UrbanEdge -->
+    <article class="feature">
+      <div class="img-container"><img src="IMAGES/Unknown.jpeg" alt="UrbanEdge Retail"></div>
+      <div class="content">
+        <span class="badge">SQL • TABLEAU</span>
+        <h3>UrbanEdge Retail</h3>
+        <p>Influencer performance intelligence to evaluate engagement, ROI, pricing, and platform value for marketing decisions.</p>
+      </div>
+      <div class="card-actions">
+        <a href="https://public.tableau.com/views/COMPLETED_17651461595980/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+        <a href="case_urbanedge.html" class="btn-skill">Case Study</a>
+        <a href="view_urbanedge_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
+      </div>
+    </article>
+
+    <!-- Choco De Luxe -->
+    <article class="feature">
+      <div class="img-container"><img src="IMAGES/Unknown-2.jpeg" alt="Choco De Luxe"></div>
+      <div class="content">
+        <span class="badge">SQL • EXCEL • TABLEAU</span>
+        <h3>Choco De Luxe</h3>
+        <p>Sales and delivery performance analysis across seven markets, with channel-level insights and product demand trends.</p>
+      </div>
+      <div class="card-actions">
+        <a href="https://public.tableau.com/views/NearlyFinished/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+        <a href="case_choco.html" class="btn-skill">Case Study</a>
+        <a href="view_choco_sql.html" target="_blank" class="btn-skill">SQL Script</a>
+        <a href="Choco_de_Luxe_Data.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
+      </div>
+    </article>
+
+    <!-- TechNova -->
+    <article class="feature">
+      <div class="img-container"><img src="IMAGES/Unknown-1.jpeg" alt="TechNova Workforce"></div>
+      <div class="content">
+        <span class="badge">SQL • EXCEL • TABLEAU</span>
+        <h3>TechNova Workforce</h3>
+        <p>HR attrition analysis identifying turnover drivers by department, satisfaction, income band, and role to improve retention.</p>
+      </div>
+      <div class="card-actions">
+        <a href="https://public.tableau.com/views/dashboard1_17652135025530/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+        <a href="case_technova.html" class="btn-skill">Case Study</a>
+        <a href="view_technova_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
+        <a href="TechNova_HR_Attrition_Dashboard.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
+      </div>
+    </article>
+
+    <!-- NovaMed -->
+    <article class="feature">
+      <div class="img-container"><img src="IMAGES/NOVAMED 2.png" alt="NovaMed BI Capstone"></div>
+      <div class="content">
+        <span class="badge">POWER BI • BUSINESS INTELLIGENCE</span>
+        <h3>NovaMed BI Capstone</h3>
+        <p>Executive Power BI report analysing revenue, profit, customer segments, demographics, and MoM performance.</p>
+      </div>
+      <div class="card-actions">
+        <a href="NovaMed_Dashboard.pdf" target="_blank" class="btn-skill btn-main">View Power BI Dashboard (PDF Export)</a>
+        <a href="case_novamed.html" class="btn-skill">Case Study</a>
+      </div>
+    </article>
+
+  </div>
+
+  <section id="toolbox">
+    <h3>Technical Expertise</h3>
+    <div class="toolbox-grid">
+      <div class="tool-card">
+        <i class="fas fa-database"></i>
+        <h4>SQL Engineering</h4>
+        <p>Data modeling, joins, window functions, CTEs, and performance-tuned queries.</p>
+      </div>
+      <div class="tool-card">
+        <i class="fas fa-chart-line"></i>
+        <h4>BI Visualization</h4>
+        <p>Executive dashboards in Tableau and Power BI with clear storytelling and filters.</p>
+      </div>
+      <div class="tool-card">
+        <i class="fas fa-table"></i>
+        <h4>Advanced Excel</h4>
+        <p>Pivot-driven dashboards, KPI cards, slicers, and clean reporting layouts.</p>
+      </div>
+      <div class="tool-card">
+        <i class="fas fa-brain"></i>
+        <h4>Analytical Thinking</h4>
+        <p>Problem framing, KPI design, insight generation, and actionable recommendations.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h2>Ready to build your data strategy?</h2>
+    <a href="mailto:nathanbanjo9@gmail.com" class="hire-me"><i class="fas fa-paper-plane"></i> Email Nathan Banjo</a>
+    <div style="margin-top: 1.3rem;">
+      <a class="muted-link" href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+        Connect on LinkedIn
+      </a>
+    </div>
+  </footer>
+
+</main>
+
+</body>
+</html>

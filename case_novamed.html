@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NovaMed BI Capstone | Case Study | Nathan Banjo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-overlay: rgba(0,0,0,0.88);
+      --accent-green:#30d158;
+      --text-secondary:#a1a1a6;
+      --card:#ffffff;
+      --text-dark:#1d1d1f;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --transition: all .3s cubic-bezier(.4,0,.2,1);
+      --radius: 22px;
+      --max: 1100px;
+    }
+    body{
+      margin:0;
+      font-family:'Inter', -apple-system, sans-serif;
+      color:#fff;
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position:center;
+      background-repeat:no-repeat;
+      -webkit-font-smoothing:antialiased;
+    }
+    header{
+      position:sticky; top:0; z-index:999;
+      backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.7);
+      border-bottom: .5px solid rgba(255,255,255,0.1);
+    }
+    .nav{
+      max-width:1200px; margin:0 auto;
+      display:flex; justify-content:space-between; align-items:center;
+      padding: .9rem 2rem;
+    }
+    .brand{ font-weight:700; color:#fff; }
+    .links{ display:flex; gap:1.5rem; }
+    .links a{ color:var(--text-secondary); text-decoration:none; font-size:.9rem; }
+    .links a:hover{ color:#fff; }
+
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    .kicker{
+      font-family:'JetBrains Mono', monospace;
+      color: var(--accent-green);
+      letter-spacing:.14rem;
+      font-size:.7rem;
+      text-transform:uppercase;
+      margin-bottom:.8rem;
+      display:block;
+    }
+    h1{ margin:0; font-size:2.6rem; letter-spacing:-0.05rem; }
+    .sub{ margin-top:.75rem; color:var(--text-secondary); line-height:1.6; max-width: 850px; }
+
+    .panel{
+      margin-top:1.2rem;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:.9rem;
+    }
+    @media (max-width: 950px){ .panel{ grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .panel{ grid-template-columns: 1fr;} }
+
+    .kpi{
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: 18px;
+      padding: 1rem;
+      box-shadow: var(--shadow);
+    }
+    .kpi .label{ font-size:.72rem; color:#6e6e73; font-weight:800; text-transform:uppercase; letter-spacing:.08rem; }
+    .kpi .value{ font-size:1.55rem; font-weight:900; margin-top:.35rem; }
+
+    .section{
+      margin-top: 1.6rem;
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .inner{ padding: 1.6rem; }
+    h2{ margin:0 0 .6rem; letter-spacing:-0.03rem; }
+    p{ margin:.4rem 0; color:#424245; line-height:1.7; }
+    .bullets{ margin:.6rem 0 0; padding-left:1.1rem; color:#424245; line-height:1.7; }
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px){ .two-col{ grid-template-columns:1fr; } }
+
+    .btns{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1rem; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding: .85rem 1rem;
+      border-radius: 14px;
+      font-weight:800;
+      font-size: .85rem;
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.08);
+      background:#f5f5f7;
+      color: var(--text-dark);
+    }
+    .btn:hover{ transform: translateY(-2px); background:#e8e8ed; }
+    .btn.primary{ background:#1d1d1f; color:#fff; }
+    .btn.primary:hover{ background:#000; }
+
+    .note{
+      background:#f5f5f7;
+      border-radius:18px;
+      padding:1.1rem;
+      margin-top:1rem;
+    }
+    .note h3{ margin:0 0 .35rem; font-size:1rem; }
+    .note ul{ margin:.2rem 0 0; padding-left:1.1rem; color:#424245; line-height:1.7; }
+
+    footer{ text-align:center; color:var(--text-secondary); padding: 0 1.5rem 4rem; }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">Nathan Banjo</div>
+    <div class="links">
+      <a href="index.html#projects">← Back to Portfolio</a>
+      <a href="mailto:nathanbanjo9@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <span class="kicker">POWER BI • DAX • BUSINESS INTELLIGENCE</span>
+    <h1>NovaMed BI Capstone — Executive Sales Performance</h1>
+    <p class="sub">
+      Executive-level Power BI reporting analysing pharmaceutical revenue, profit, customer profitability, demographics,
+      and MoM growth. Designed for leadership to see top/bottom performers, cost pressure (COGS), and growth patterns.
+    </p>
+
+    <div class="panel">
+      <div class="kpi"><div class="label">Total Units Sold</div><div class="value">269K</div></div>
+      <div class="kpi"><div class="label">Total Revenue</div><div class="value">71.31M</div></div>
+      <div class="kpi"><div class="label">Total Profit</div><div class="value">58.45M</div></div>
+      <div class="kpi"><div class="label">Profit Margin</div><div class="value">81.97%</div></div>
+    </div>
+
+    <div class="panel" style="grid-template-columns:repeat(3,1fr); margin-top:.9rem;">
+      <div class="kpi"><div class="label">Total Customers</div><div class="value">200</div></div>
+      <div class="kpi"><div class="label">MoM Revenue Growth</div><div class="value">26.48%</div></div>
+      <div class="kpi"><div class="label">COGS</div><div class="value">12.85M</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner two-col">
+      <div>
+        <h2>Business Goal</h2>
+        <p>
+          Provide a clear executive view of performance: revenue, profit, MoM growth trends, and which drugs/customers
+          are driving results (or dragging them down).
+        </p>
+
+        <h2 style="margin-top:1.2rem;">Key Questions</h2>
+        <ul class="bullets">
+          <li>What is overall performance (revenue, profit, margin, COGS)?</li>
+          <li>Which products are most/least profitable?</li>
+          <li>Which customers are top and bottom performers?</li>
+          <li>How is MoM growth trending over time?</li>
+          <li>How does revenue break down by demographics and geography?</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Portfolio Link</h2>
+        <div class="btns">
+          <a class="btn primary" href="NovaMed_Dashboard.pdf" target="_blank" rel="noopener">Open Power BI Dashboard (PDF Export)</a>
+        </div>
+
+        <div class="note">
+          <h3>Is "PDF only" enough?</h3>
+          <ul>
+            <li><strong>Yes</strong> — for a portfolio, a clean PDF export is acceptable.</li>
+            <li>Later, you can upgrade to an interactive Power BI link (when you have a Power BI Service account).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>Key Findings</h2>
+      <ul class="bullets">
+        <li>Strong profitability profile (high profit margin) with visible COGS tracking.</li>
+        <li>Clear top/bottom product visibility supports pricing, procurement, and product strategy decisions.</li>
+        <li>Customer ranking identifies where profit concentration and churn risk may exist.</li>
+        <li>MoM trend visual helps isolate spikes/dips for investigation (seasonality, promos, supply issues).</li>
+      </ul>
+
+      <h2 style="margin-top:1.2rem;">Recommendations</h2>
+      <ul class="bullets">
+        <li>Protect supply and availability of top profit-driving drugs; review demand planning.</li>
+        <li>Investigate bottom products: margin erosion, high COGS, discounting, or low volumes.</li>
+        <li>Segment customer strategy: retain high-value customers; design uplift plans for mid-tier accounts.</li>
+        <li>Use MoM trend anomalies as triggers for root-cause drills (country, drug, customer segment).</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Prepared by: <strong>Nathan Banjo</strong> · Data Analyst Portfolio
+</footer>
+</body>
+</html>

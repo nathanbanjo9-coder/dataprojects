@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Choco De Luxe SQL Script</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1e1e1e;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #2d2d2d;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+h1 {
+  color: #30d158;
+  margin-top: 0;
+}
+
+pre {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  border-left: 4px solid #30d158;
+}
+
+code {
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Choco De Luxe SQL Script</h1>
+
+<pre><code class="language-sql">Q1 — Total boxes shipped
+SELECT SUM(boxes_shipped) AS total_boxes_shipped
+FROM fact_sales;
+
+Q2 — Monthly shipment trend
+SELECT
+  DATE_TRUNC('month', sale_date)::date AS month,
+  SUM(boxes_shipped) AS boxes_shipped
+FROM fact_sales
+GROUP BY month
+ORDER BY month;
+
+Q3 — Top products by volume
+SELECT
+  product_id,
+  SUM(boxes_shipped) AS total_boxes
+FROM fact_sales
+GROUP BY product_id
+ORDER BY total_boxes DESC
+LIMIT 5;
+
+Q4 — Sales channel performance
+SET search_path TO choco;
+
+SELECT
+  sc.sales_channel_name,
+  SUM(fs.boxes_shipped) AS total_boxes
+FROM fact_sales fs
+JOIN dim_sales_channel sc
+  ON sc.sales_channel_id = fs.sales_channel_id
+GROUP BY sc.sales_channel_name
+ORDER BY total_boxes DESC;
+
+Q5 — Delivery success distribution
+
+SELECT
+  ds.delivery_status_name,
+  COUNT(*) AS orders
+FROM fact_sales fs
+JOIN dim_delivery_status ds
+  ON ds.delivery_status_id = fs.delivery_status_id
+GROUP BY ds.delivery_status_name;
+
+Q6 — On-time delivery percentage
+SELECT
+  ROUND(
+    100.0 * SUM(CASE WHEN ds.delivery_status_name = 'Completed' THEN 1 ELSE 0 END)
+    / COUNT(*),
+    2
+  ) AS on_time_delivery_pct
+FROM fact_sales fs
+JOIN dim_delivery_status ds
+  ON ds.delivery_status_id = fs.delivery_status_id;
+
+Q7 — Salesperson performance ranking
+SELECT
+  salesperson_id,
+  SUM(boxes_shipped) AS total_boxes,
+  RANK() OVER (ORDER BY SUM(boxes_shipped) DESC) AS rank
+FROM fact_sales
+GROUP BY salesperson_id;
+
+Q8 — Location demand leaderboard
+SELECT
+  location_id,
+  SUM(boxes_shipped) AS total_boxes
+FROM fact_sales
+GROUP BY location_id
+ORDER BY total_boxes DESC;
+
+Q9 — Channel × product distribution matrix
+SET search_path TO choco;
+
+SELECT
+  sc.sales_channel_name,
+  fs.product_id,
+  SUM(fs.boxes_shipped) AS boxes_shipped
+FROM fact_sales fs
+JOIN dim_sales_channel sc
+  ON sc.sales_channel_id = fs.sales_channel_id
+GROUP BY sc.sales_channel_name, fs.product_id
+ORDER BY sc.sales_channel_name, boxes_shipped DESC;
+
+Q10 — Peak shipping days
+SELECT
+  sale_date,
+  SUM(boxes_shipped) AS boxes_shipped
+FROM fact_sales
+GROUP BY sale_date
+ORDER BY boxes_shipped DESC
+LIMIT 10;</code></pre>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+</body>
+</html>

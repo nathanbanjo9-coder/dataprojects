@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UrbanEdge Retail | Case Study | Nathan Banjo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-overlay: rgba(0,0,0,0.88);
+      --accent-green:#30d158;
+      --text-secondary:#a1a1a6;
+      --card:#ffffff;
+      --text-dark:#1d1d1f;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --transition: all .3s cubic-bezier(.4,0,.2,1);
+      --radius: 22px;
+      --max: 1100px;
+    }
+
+    body{
+      margin:0;
+      font-family:'Inter', -apple-system, sans-serif;
+      color:#fff;
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position:center;
+      background-repeat:no-repeat;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    header{
+      position:sticky; top:0; z-index:999;
+      backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.7);
+      border-bottom: .5px solid rgba(255,255,255,0.1);
+    }
+    .nav{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding: .9rem 2rem;
+    }
+    .nav a{ color: var(--text-secondary); text-decoration:none; font-size:.9rem; }
+    .nav a:hover{ color:#fff; }
+    .brand{ font-weight:700; letter-spacing:-0.02rem; color:#fff; }
+    .links{ display:flex; gap:1.5rem; }
+
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    .hero{
+      padding: 2.5rem 0 1.5rem;
+      text-align:left;
+    }
+    .kicker{
+      font-family:'JetBrains Mono', monospace;
+      color: var(--accent-green);
+      letter-spacing:.14rem;
+      font-size:.7rem;
+      text-transform:uppercase;
+      margin-bottom:.8rem;
+      display:block;
+    }
+    h1{
+      margin:0;
+      font-size: 2.6rem;
+      letter-spacing:-0.05rem;
+    }
+    .sub{
+      margin-top:.75rem;
+      color: var(--text-secondary);
+      line-height:1.6;
+      max-width: 850px;
+      font-size: 1.02rem;
+    }
+
+    .panel{
+      background: rgba(255,255,255,0.06);
+      border: .5px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    .grid-kpis{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .9rem;
+    }
+    @media (max-width: 1100px){ .grid-kpis{ grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .grid-kpis{ grid-template-columns: 1fr;} }
+
+    .kpi{
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: 18px;
+      padding: 1rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .kpi .label{ font-size:.72rem; color:#6e6e73; font-weight:700; text-transform:uppercase; letter-spacing:.08rem; }
+    .kpi .value{ font-size:1.4rem; font-weight:800; margin-top:.35rem; }
+
+    .section{
+      margin-top: 1.6rem;
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .section .inner{ padding: 1.6rem 1.6rem; }
+    .section h2{ margin:0 0 .6rem; letter-spacing:-0.03rem; }
+    .section p{ margin:.4rem 0; color:#424245; line-height:1.7; }
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px){ .two-col{ grid-template-columns: 1fr; } }
+
+    .bullets{
+      margin:.6rem 0 0;
+      padding-left: 1.1rem;
+      color:#424245;
+      line-height:1.7;
+    }
+
+    .callouts{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 900px){ .callouts{ grid-template-columns: 1fr; } }
+
+    .callout{
+      background: #f5f5f7;
+      border-radius: 18px;
+      padding: 1.1rem 1.1rem;
+    }
+    .callout h3{ margin:0 0 .5rem; font-size:1rem; }
+    .callout ul{ margin:.2rem 0 0; padding-left:1.1rem; color:#424245; line-height:1.7; }
+
+    .btns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.7rem;
+      margin-top: 1rem;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding: .85rem 1rem;
+      border-radius: 14px;
+      font-weight:700;
+      font-size: .85rem;
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.08);
+      background:#f5f5f7;
+      color: var(--text-dark);
+    }
+    .btn:hover{ transform: translateY(-2px); background:#e8e8ed; }
+    .btn.primary{
+      background:#1d1d1f; color:#fff; border:1px solid rgba(255,255,255,0.12);
+    }
+    .btn.primary:hover{ background:#000; }
+
+    footer{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      color: var(--text-secondary);
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">Nathan Banjo</div>
+    <div class="links">
+      <a href="index.html#projects">← Back to Portfolio</a>
+      <a href="mailto:nathanbanjo9@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <span class="kicker">SQL • TABLEAU</span>
+    <h1>UrbanEdge Retail — Influencer Performance Intelligence</h1>
+    <p class="sub">
+      Built an executive dashboard to evaluate influencer marketing performance by platform, category, and geography —
+      turning engagement and spend signals into decision-ready budget guidance.
+    </p>
+
+    <div class="panel">
+      <div class="grid-kpis">
+        <div class="kpi">
+          <div class="label">Avg Views</div>
+          <div class="value">178,500</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Influencers</div>
+          <div class="value">10</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Total Followers</div>
+          <div class="value">4,420,000</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Past Campaign ROI</div>
+          <div class="value">23</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Avg Price / Post</div>
+          <div class="value">£520</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner two-col">
+      <div>
+        <h2>Business Goal</h2>
+        <p>
+          Improve marketing efficiency by identifying which platforms and influencer categories deliver the best
+          engagement and scale relative to spend.
+        </p>
+
+        <h2 style="margin-top:1.2rem;">Key Questions</h2>
+        <ul class="bullets">
+          <li>Which platform drives the highest average views and follower scale?</li>
+          <li>What categories show the strongest engagement rate?</li>
+          <li>Which influencers are over-priced vs. performance?</li>
+          <li>How does performance vary by geography (country)?</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Tooling</h2>
+        <ul class="bullets">
+          <li>SQL: extraction + KPI shaping</li>
+          <li>Tableau: interactive dashboard</li>
+          <li>Metrics: engagement rate, views, followers, price/post, ROI</li>
+        </ul>
+
+        <div class="btns">
+          <a class="btn primary" href="https://public.tableau.com/views/COMPLETED_17651461595980/Dashboard1" target="_blank" rel="noopener">Open Tableau Dashboard</a>
+          <a class="btn" href="view_urbanedge_sql.html" target="_blank" rel="noopener">View SQL Scripts</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>Highlights & Findings</h2>
+      <div class="callouts">
+        <div class="callout">
+          <h3>Platform Performance (Views)</h3>
+          <ul>
+            <li>TikTok is the largest view driver (1,070,000) vs. Instagram (270,000), Twitch (250,000), YouTube (195,000).</li>
+            <li>Use platform-level performance to guide budget split.</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>Pricing vs. Value</h3>
+          <ul>
+            <li>Avg. price per post is £520 — benchmark influencers against engagement & follower scale.</li>
+            <li>Flag high-cost influencers with weak engagement for renegotiation or replacement.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout">
+          <h3>Category Insight</h3>
+          <ul>
+            <li>Compare engagement rate by category (e.g., Fashion / Fitness / Food / Wellness) to find high-yield verticals.</li>
+            <li>Prioritise categories with strong engagement over pure follower count.</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>Geo Insight</h3>
+          <ul>
+            <li>Use the map view to identify markets with stronger engagement potential.</li>
+            <li>Localise influencer selection per country to reduce wasted spend.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 style="margin-top:1.2rem;">Recommendations</h2>
+      <ul class="bullets">
+        <li>Shift budget toward the highest view-driving platform(s) while maintaining controlled A/B tests on others.</li>
+        <li>Introduce a "value score" = engagement rate × followers ÷ price per post for fair comparisons.</li>
+        <li>Standardise pricing bands by platform + category to reduce overspend.</li>
+        <li>Build a shortlist of top performers per category for repeat campaigns.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Prepared by: <strong>Nathan Banjo</strong> · Data Analyst Portfolio
+</footer>
+
+</body>
+</html>
