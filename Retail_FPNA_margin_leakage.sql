@@ -1,0 +1,307 @@
+-- Retail FP&A & Margin Leakage SQL
+
+-- 0.1 Date coverage in sales
+SELECT
+  MIN(d.[Date]) AS min_order_date,
+  MAX(d.[Date]) AS max_order_date,
+  COUNT(DISTINCT d.[Year]) AS years_covered
+FROM fact_sales s
+JOIN dim_date d ON d.DateKey = s.OrderDateKey;
+
+-- 0.2 Are there duplicate OrderIDs in sales? (should usually be unique if order-level fact)
+SELECT
+  COUNT(*) AS rows_in_fact_sales,
+  COUNT(DISTINCT s.OrderID) AS distinct_orders,
+  (COUNT(*) - COUNT(DISTINCT s.OrderID)) AS possible_duplicates
+FROM fact_sales s;
+
+-- 0.3 Do returns link to sales orders?
+SELECT
+  COUNT(*) AS returns_rows,
+  SUM(CASE WHEN s.OrderID IS NULL THEN 1 ELSE 0 END) AS returns_without_matching_sale
+FROM fact_returns r
+LEFT JOIN fact_sales s ON s.OrderID = r.OrderID;
+
+-- ============================================================
+-- 1) EXECUTIVE KPIs (Revenue, Profit, Margin, Transactions)
+-- ============================================================
+
+SELECT
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS total_revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS total_profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct,
+  COUNT(DISTINCT s.OrderID) AS total_transactions,
+  ROUND(SUM(s.OrderRevenueGBP) / NULLIF(COUNT(DISTINCT s.OrderID), 0), 2) AS aov_gbp
+FROM fact_sales s;
+
+-- ============================================================
+-- 2) REVENUE & PROFIT BY YEAR / MONTH (FP&A TRENDING)
+-- ============================================================
+
+-- 2.1 Revenue & Profit by Year
+SELECT
+  d.[Year],
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+JOIN dim_date d ON d.DateKey = s.OrderDateKey
+GROUP BY d.[Year]
+ORDER BY d.[Year];
+
+-- 2.2 Revenue & Profit by Month (Year-Month)
+SELECT
+  d.[Year],
+  d.[Month],
+  d.MonthName,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+JOIN dim_date d ON d.DateKey = s.OrderDateKey
+GROUP BY d.[Year], d.[Month], d.MonthName
+ORDER BY d.[Year], d.[Month];
+
+-- ============================================================
+-- 3) YoY GROWTH (Revenue + Profit)
+-- ============================================================
+
+WITH yearly AS (
+  SELECT
+    d.[Year],
+    SUM(s.OrderRevenueGBP) AS revenue_gbp,
+    SUM(s.GrossMarginGBP) AS profit_gbp
+  FROM fact_sales s
+  JOIN dim_date d ON d.DateKey = s.OrderDateKey
+  GROUP BY d.[Year]
+)
+SELECT
+  [Year],
+  ROUND(revenue_gbp, 2) AS revenue_gbp,
+  ROUND(profit_gbp, 2) AS profit_gbp,
+  ROUND((revenue_gbp - LAG(revenue_gbp) OVER (ORDER BY [Year])) / NULLIF(LAG(revenue_gbp) OVER (ORDER BY [Year]), 0), 4) AS revenue_yoy_growth,
+  ROUND((profit_gbp - LAG(profit_gbp) OVER (ORDER BY [Year])) / NULLIF(LAG(profit_gbp) OVER (ORDER BY [Year]), 0), 4) AS profit_yoy_growth
+FROM yearly
+ORDER BY [Year];
+
+-- ============================================================
+-- 4) CHANNEL / DELIVERY METHOD PERFORMANCE
+-- ============================================================
+
+-- 4.1 Revenue by Channel
+SELECT
+  s.Channel,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+GROUP BY s.Channel
+ORDER BY revenue_gbp DESC;
+
+-- 4.2 Revenue by Delivery Method
+SELECT
+  s.DeliveryMethod,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+GROUP BY s.DeliveryMethod
+ORDER BY revenue_gbp DESC;
+
+-- ============================================================
+-- 5) CUSTOMER & PRODUCT PROFITABILITY (TOP / BOTTOM)
+-- ============================================================
+
+-- 5.1 Top 10 Customers by Revenue (CustomerID only)
+SELECT TOP 10
+  s.CustomerID,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct,
+  COUNT(DISTINCT s.OrderID) AS transactions
+FROM fact_sales s
+GROUP BY s.CustomerID
+ORDER BY revenue_gbp DESC;
+
+-- 5.2 Bottom 10 Customers by Profit (loss-makers / low margin)
+SELECT TOP 10
+  s.CustomerID,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+GROUP BY s.CustomerID
+ORDER BY profit_gbp ASC;
+
+-- 5.3 Top 10 Products by Revenue
+SELECT TOP 10
+  p.ProductName,
+  p.Category,
+  p.Brand,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+JOIN dim_product p ON p.ProductID = s.ProductID
+GROUP BY p.ProductName, p.Category, p.Brand
+ORDER BY revenue_gbp DESC;
+
+-- 5.4 Bottom 10 Products by Profit Margin (margin leakage candidates)
+SELECT TOP 10
+  p.ProductName,
+  p.Category,
+  p.Brand,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+JOIN dim_product p ON p.ProductID = s.ProductID
+GROUP BY p.ProductName, p.Category, p.Brand
+HAVING SUM(s.OrderRevenueGBP) > 0
+ORDER BY profit_margin_pct ASC;
+
+-- ============================================================
+-- 6) DISCOUNT ANALYSIS (Leakage driver)
+-- ============================================================
+
+-- 6.1 Average Discount % by Category
+SELECT
+  p.Category,
+  ROUND(AVG(CAST(s.DiscountRate AS FLOAT)), 4) AS avg_discount_pct,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct
+FROM fact_sales s
+JOIN dim_product p ON p.ProductID = s.ProductID
+GROUP BY p.Category
+ORDER BY avg_discount_pct DESC;
+
+-- 6.2 High-discount transactions (example threshold 20%)
+SELECT TOP 50
+  s.OrderID,
+  d.[Date] AS order_date,
+  s.CustomerID,
+  p.ProductName,
+  p.Category,
+  s.Channel,
+  s.DeliveryMethod,
+  s.OrderRevenueGBP,
+  s.GrossMarginGBP,
+  s.DiscountRate
+FROM fact_sales s
+JOIN dim_date d ON d.DateKey = s.OrderDateKey
+JOIN dim_product p ON p.ProductID = s.ProductID
+WHERE CAST(s.DiscountRate AS FLOAT) >= 0.20
+ORDER BY s.DiscountRate DESC, s.OrderRevenueGBP DESC;
+
+-- ============================================================
+-- 7) RETURNS & MARGIN LEAKAGE (Core Page 4)
+-- ============================================================
+
+-- 7.1 Total Returned Revenue (Refunds)
+SELECT
+  ROUND(SUM(r.RefundAmountGBP), 2) AS total_returned_revenue_gbp
+FROM fact_returns r;
+
+-- 7.2 Return Rate % = refunded revenue / total revenue
+SELECT
+  ROUND(SUM(r.RefundAmountGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS return_rate_pct
+FROM fact_sales s
+LEFT JOIN fact_returns r ON r.OrderID = s.OrderID;
+
+-- 7.3 Net Revenue & Net Profit After Returns
+WITH base AS (
+  SELECT
+    SUM(s.OrderRevenueGBP) AS gross_revenue,
+    SUM(s.GrossMarginGBP) AS gross_profit,
+    SUM(COALESCE(r.RefundAmountGBP, 0)) AS refunded_revenue
+  FROM fact_sales s
+  LEFT JOIN fact_returns r ON r.OrderID = s.OrderID
+)
+SELECT
+  ROUND(gross_revenue, 2) AS gross_revenue_gbp,
+  ROUND(refunded_revenue, 2) AS refunded_revenue_gbp,
+  ROUND(gross_revenue - refunded_revenue, 2) AS net_revenue_gbp,
+  ROUND(gross_profit - refunded_revenue, 2) AS net_profit_after_returns_gbp
+FROM base;
+
+-- 7.4 Returned Revenue by Product (top return leakage products)
+SELECT TOP 20
+  p.ProductName,
+  p.Category,
+  ROUND(SUM(r.RefundAmountGBP), 2) AS returned_revenue_gbp,
+  COUNT(DISTINCT r.ReturnID) AS returns_count
+FROM fact_returns r
+JOIN fact_sales s ON s.OrderID = r.OrderID
+JOIN dim_product p ON p.ProductID = s.ProductID
+GROUP BY p.ProductName, p.Category
+ORDER BY returned_revenue_gbp DESC;
+
+-- 7.5 Return Rate % by Category (refunded revenue / sales revenue)
+WITH cat AS (
+  SELECT
+    p.Category,
+    SUM(s.OrderRevenueGBP) AS sales_revenue,
+    SUM(COALESCE(r.RefundAmountGBP,0)) AS refunded_revenue
+  FROM fact_sales s
+  JOIN dim_product p ON p.ProductID = s.ProductID
+  LEFT JOIN fact_returns r ON r.OrderID = s.OrderID
+  GROUP BY p.Category
+)
+SELECT
+  Category,
+  ROUND(sales_revenue, 2) AS sales_revenue_gbp,
+  ROUND(refunded_revenue, 2) AS refunded_revenue_gbp,
+  ROUND(refunded_revenue / NULLIF(sales_revenue, 0), 4) AS return_rate_pct
+FROM cat
+ORDER BY return_rate_pct DESC;
+
+-- 7.6 Returned Revenue by Region (using store region if available)
+-- If Region lives in dim_customer instead, swap to dim_customer.
+SELECT
+  st.Region,
+  ROUND(SUM(r.RefundAmountGBP), 2) AS returned_revenue_gbp
+FROM fact_returns r
+JOIN fact_sales s ON s.OrderID = r.OrderID
+JOIN dim_store st ON st.StoreID = s.StoreID
+GROUP BY st.Region
+ORDER BY returned_revenue_gbp DESC;
+
+-- 7.7 Return Reasons (what’s driving leakage)
+SELECT
+  r.ReturnReason,
+  COUNT(*) AS returns_count,
+  ROUND(SUM(r.RefundAmountGBP), 2) AS refunded_revenue_gbp
+FROM fact_returns r
+GROUP BY r.ReturnReason
+ORDER BY refunded_revenue_gbp DESC;
+
+-- ============================================================
+-- 8) PROFIT MARGIN % BY CATEGORY (matches your dashboard visual)
+-- ============================================================
+
+SELECT
+  p.Category,
+  ROUND(SUM(s.GrossMarginGBP) / NULLIF(SUM(s.OrderRevenueGBP), 0), 4) AS profit_margin_pct,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(SUM(s.GrossMarginGBP), 2) AS profit_gbp
+FROM fact_sales s
+JOIN dim_product p ON p.ProductID = s.ProductID
+GROUP BY p.Category
+ORDER BY profit_margin_pct DESC;
+
+-- ============================================================
+-- 9) OPTIONAL: CAMPAIGN ROI SNAPSHOT (if campaign cost exists)
+-- ============================================================
+
+-- If dim_campaign has BudgetGBP and fact_sales has CampaignID
+-- ROI = (Revenue - Budget) / Budget
+SELECT
+  c.CampaignName,
+  c.Channel,
+  ROUND(SUM(s.OrderRevenueGBP), 2) AS revenue_gbp,
+  ROUND(MAX(c.BudgetGBP), 2) AS budget_gbp,
+  ROUND((SUM(s.OrderRevenueGBP) - MAX(c.BudgetGBP)) / NULLIF(MAX(c.BudgetGBP), 0), 4) AS roi
+FROM fact_sales s
+JOIN dim_campaign c ON c.CampaignID = s.CampaignID
+GROUP BY c.CampaignName, c.Channel
+ORDER BY roi DESC;

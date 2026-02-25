@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Northstar Retail Group | FP&A & Margin Leakage Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #050608;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.10);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.70);
+      --muted2: rgba(255,255,255,0.55);
+      --accent: #30d158;
+      --shadow: 0 18px 60px rgba(0,0,0,0.45);
+      --shadow2: 0 16px 40px rgba(48, 209, 88, 0.12);
+      --radius: 26px;
+      --radius2: 18px;
+      --maxw: 1120px;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body{
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(48,209,88,0.10), transparent 60%),
+        radial-gradient(900px 650px at 90% 15%, rgba(48,209,88,0.08), transparent 55%),
+        linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.88)),
+        url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Nav (matches your portfolio nav feel) */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(18px);
+      background: rgba(0,0,0,0.68);
+      border-bottom: 0.5px solid rgba(255,255,255,0.10);
+    }
+    .topbar-inner{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0.9rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand{
+      display: inline-flex;
+      gap: .7rem;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 750;
+      letter-spacing: -0.02rem;
+    }
+    .brand .tag{
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+    }
+    .navlinks{
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .navlinks a{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      transition: 0.25s;
+    }
+    .navlinks a:hover{ color: #fff; }
+
+    /* Page container */
+    .wrap{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 2.2rem 1.6rem 4.5rem;
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 0.65rem;
+      padding: 2.2rem 0 0.9rem;
+    }
+    .kicker{
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+    }
+    .hero h1{
+      margin: 0.55rem 0 0;
+      font-size: 2.85rem;
+      letter-spacing: -0.06rem;
+      line-height: 1.05;
+      text-shadow: 0 16px 60px rgba(0,0,0,0.55);
+    }
+    .hero p{
+      margin: 0.9rem 0 0;
+      color: var(--muted);
+      font-size: 1.03rem;
+      line-height: 1.6;
+      max-width: 920px;
+    }
+
+    /* KPI grid */
+    .kpis{
+      margin-top: 1.45rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+    @media (max-width: 980px){ .kpis{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px){ .kpis{ grid-template-columns: 1fr; } }
+
+    .kpi{
+      background: rgba(255,255,255,0.92);
+      color: #0b0c0f;
+      border-radius: 18px;
+      padding: 1rem 1.05rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .kpi .label{
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12rem;
+      text-transform: uppercase;
+      opacity: 0.70;
+      margin-bottom: 0.25rem;
+    }
+    .kpi .value{
+      font-size: 1.55rem;
+      font-weight: 850;
+      letter-spacing: -0.03rem;
+    }
+    .kpi .sub{
+      margin-top: 0.25rem;
+      font-size: 0.78rem;
+      opacity: 0.70;
+    }
+
+    /* Two-column section layout */
+    .grid2{
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    @media (max-width: 900px){ .grid2{ grid-template-columns: 1fr; } }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.25rem;
+    }
+    .panel h2{
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: -0.02rem;
+    }
+    .panel p{
+      margin: 0.8rem 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .bullets{
+      margin: 0.8rem 0 0;
+      padding-left: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    /* Link card */
+    .linkbox{
+      background: rgba(255,255,255,0.94);
+      color: #0b0c0f;
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 1.25rem;
+      box-shadow: var(--shadow2);
+    }
+    .linkbox h3{
+      margin: 0;
+      font-size: 1.08rem;
+      letter-spacing: -0.02rem;
+    }
+    .btnrow{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      text-decoration: none;
+      padding: 0.78rem 0.95rem;
+      border-radius: 14px;
+      font-weight: 850;
+      font-size: 0.86rem;
+      transition: 0.25s;
+      border: 1px solid rgba(0,0,0,0.10);
+    }
+    .btn.primary{
+      background: #111216;
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn.primary:hover{ background: #000; transform: translateY(-1px); }
+    .btn.ghost{
+      background: #f4f5f7;
+      color: #111216;
+    }
+    .btn.ghost:hover{ background: #e9eaee; transform: translateY(-1px); }
+
+    .note{
+      margin-top: 0.85rem;
+      background: rgba(0,0,0,0.06);
+      border-radius: 14px;
+      padding: 0.85rem;
+      font-size: 0.88rem;
+      color: rgba(11,12,15,0.75);
+      line-height: 1.5;
+    }
+
+    /* Page breakdown */
+    .section{
+      margin-top: 1rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .section h2{
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: -0.02rem;
+    }
+
+    .cards{
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+    @media (max-width: 860px){ .cards{ grid-template-columns: 1fr; } }
+
+    .mini{
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 1rem 1rem;
+    }
+    .mini .title{
+      font-weight: 850;
+      letter-spacing: -0.01rem;
+      margin: 0;
+    }
+    .mini .meta{
+      margin-top: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+    }
+    .mini ul{
+      margin: 0.7rem 0 0;
+      padding-left: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--muted2);
+      font-size: 0.9rem;
+    }
+    .footer a{
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+    }
+    .footer a:hover{ color: #fff; }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <span>Nathan Banjo</span>
+        <span class="tag">Power BI • FP&A • SQL</span>
+      </a>
+      <nav class="navlinks">
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+        <a href="mailto:nathanbanjo9@gmail.com"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <div class="kicker">POWER BI • DAX • FP&A • MARGIN LEAKAGE</div>
+      <h1>Northstar Retail Group — Retail FP&A & Margin Leakage Dashboard</h1>
+      <p>
+        Executive-level financial performance reporting built on <strong>DataChad’s million+ rows retail dataset</strong>,
+        designed to help leaders track growth, profitability, discount impact, and return-driven margin leakage.
+        The report connects Sales + Returns into a single model so stakeholders can identify where profit is made,
+        where it erodes, and what to do next.
+      </p>
+
+      <!-- KPI Cards (use your dashboard values) -->
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Total Revenue</div>
+          <div class="value">28.44M</div>
+          <div class="sub">All channels • all regions</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Profit Growth</div>
+          <div class="value">50.86%</div>
+          <div class="sub">Year-over-year</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Profit Margin</div>
+          <div class="value">41.58%</div>
+          <div class="sub">Gross margin basis</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Revenue Growth</div>
+          <div class="value">201.56%</div>
+          <div class="sub">YoY growth trend</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <h2>Business Goal</h2>
+        <p>
+          Provide a clear FP&A view of performance (revenue, profit, margin) while exposing the biggest
+          sources of margin leakage (discounting + returns). The dashboard is designed to answer
+          “what changed, why it changed, and where to act.”
+        </p>
+
+        <h2 style="margin-top:1rem;">Key Questions</h2>
+        <ul class="bullets">
+          <li>What is the overall revenue, profit, and margin trend by year/month?</li>
+          <li>Which customers and products drive the most revenue — and which destroy margin?</li>
+          <li>How do discount levels relate to margin outcomes across categories?</li>
+          <li>Where are returns concentrated (products, regions, reasons) and how much profit do they remove?</li>
+          <li>What is net profit after returns (true profitability), and what levers improve it?</li>
+        </ul>
+      </div>
+
+      <aside class="linkbox">
+        <h3>Portfolio Link</h3>
+        <div class="btnrow">
+          <a class="btn primary" href="Retail FP&A &amp; Margin Leakage Dashboard.pdf" target="_blank" rel="noopener">
+            <i class="fas fa-file-pdf"></i> Open Dashboard (PDF Export)
+          </a>
+          <a class="btn ghost" href="Retail_FPNA_margin_leakage.sql" target="_blank" rel="noopener">
+            <i class="fas fa-code"></i> Open SQL Analysis File
+          </a>
+        </div>
+
+        <div class="note">
+          <strong>Dataset:</strong> DataChad’s retail dataset (million+ rows) used to simulate real-world FP&A scale.
+          <br><br>
+          <strong>Tools:</strong> Power BI (DAX, modeling), SQL (validation & deep dives).
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>Dashboard Structure (4 Pages)</h2>
+
+      <div class="cards">
+        <div class="mini">
+          <div class="title">1) Executive Financial Overview</div>
+          <div class="meta">KPIs • Channel Mix • Customer Demographics</div>
+          <ul>
+            <li>Topline KPIs: Revenue, Profit, Transactions, AOV</li>
+            <li>Revenue by Channel + Delivery Method</li>
+            <li>Profit contribution by age group + subscription eligibility</li>
+            <li>Revenue by Brand (quick revenue concentration view)</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <div class="title">2) Customer & Profitability Analysis</div>
+          <div class="meta">Top / Bottom • Region • Segment</div>
+          <ul>
+            <li>Profit margin % by category (margin strength comparison)</li>
+            <li>Top 10 Customers by Revenue (CustomerID-based ranking)</li>
+            <li>Top products by revenue + active customers by region</li>
+            <li>Segment revenue split for targeting and pricing strategy</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <div class="title">3) Sales Performance & Growth Analysis</div>
+          <div class="meta">YoY • MoM • Trendlines</div>
+          <ul>
+            <li>Revenue growth % trend by month</li>
+            <li>Profit trend by month and year (performance stability)</li>
+            <li>Revenue by year with growth context</li>
+            <li>Revenue + profit margin combined to avoid “growth at any cost”</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <div class="title">4) Returns & Margin Leakage</div>
+          <div class="meta">Leakage • Return Rate • Net Profit</div>
+          <ul>
+            <li>Total Returned Revenue + Return Rate %</li>
+            <li>Average discount % vs profit margin (pressure analysis)</li>
+            <li>Net profit after returns (true profitability)</li>
+            <li>Return drivers by product / category / region to guide fixes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Key Findings</h2>
+      <ul class="bullets">
+        <li><strong>Growth is strong</strong>, but margin must be monitored to prevent “revenue-only” decision-making.</li>
+        <li><strong>Discounting impacts profitability unevenly</strong> — some categories sustain discounting, others collapse margin fast.</li>
+        <li><strong>Returns are a measurable profit leak</strong> that can be traced to specific products/regions (actionable, not generic).</li>
+        <li><strong>Revenue concentration exists</strong> across a subset of customers/products, increasing risk and dependency.</li>
+      </ul>
+
+      <h2 style="margin-top:1rem;">Recommendations</h2>
+      <ul class="bullets">
+        <li>Introduce <strong>margin guardrails</strong> (min margin thresholds) for high-discount categories/products.</li>
+        <li>Create a <strong>returns reduction plan</strong>: focus on top return products first (quality, sizing, packaging, delivery issues).</li>
+        <li>Track <strong>net profit after returns</strong> as an executive KPI (not just gross profit).</li>
+        <li>Prioritise <strong>high-LTV segments</strong> with strong margin and low return rates for retention and targeted campaigns.</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      Built by <strong>Nathan Banjo</strong> • FP&A Analytics • Power BI + SQL •
+      <a href="mailto:nathanbanjo9@gmail.com">nathanbanjo9@gmail.com</a>
+    </div>
+
+  </main>
+
+</body>
+</html>

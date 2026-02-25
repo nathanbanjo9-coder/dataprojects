@@ -1,0 +1,187 @@
+/* ============================================================
+   HOMECARE PHARMACY — SQL ANALYSIS PACK (PostgreSQL)
+   Coverage: Data validation • Commercial KPIs • Ops KPIs • Patient experience
+   Schema: homecare_pharmacy
+   ============================================================ */
+
+-- Quick look
+SELECT * FROM homecare_pharmacy.orders;
+
+-- ============================================================
+-- 1) DATA VALIDATION QUERIES
+-- ============================================================
+
+-- 1) Duplicate detection
+SELECT order_code, COUNT(*)
+FROM homecare_pharmacy.orders
+GROUP BY order_code
+HAVING COUNT(*) > 1;
+
+-- 2) Null / Missing Data Check
+SELECT *
+FROM homecare_pharmacy.orders
+WHERE order_value IS NULL
+   OR payment_status IS NULL
+   OR order_ts IS NULL;
+
+-- 3) Invalid Payment Status Check
+SELECT DISTINCT payment_status
+FROM homecare_pharmacy.orders;
+
+-- ============================================================
+-- 2) BUSINESS KPI QUERIES
+-- ============================================================
+
+-- 4) Monthly Revenue Trend
+SELECT
+    DATE_TRUNC('month', order_ts) AS month,
+    SUM(order_value) AS total_revenue,
+    COUNT(*) AS total_orders
+FROM homecare_pharmacy.orders
+GROUP BY month
+ORDER BY month;
+
+-- 5) Payment Success Rate
+SELECT
+    ROUND(
+        SUM(CASE WHEN payment_status = 'Paid' THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+    2) AS payment_success_rate
+FROM homecare_pharmacy.orders;
+
+-- 6) High-Value Pending Orders (Operational Risk)
+SELECT *
+FROM homecare_pharmacy.orders
+WHERE payment_status = 'Pending'
+  AND order_value > 150
+ORDER BY order_value DESC;
+
+-- 7) MoM Growth
+WITH monthly_revenue AS (
+    SELECT
+        DATE_TRUNC('month', order_ts) AS month,
+        SUM(order_value) AS revenue
+    FROM homecare_pharmacy.orders
+    GROUP BY month
+)
+SELECT
+    month,
+    revenue,
+    LAG(revenue) OVER (ORDER BY month) AS previous_month,
+    ROUND(
+        (revenue - LAG(revenue) OVER (ORDER BY month))
+        / LAG(revenue) OVER (ORDER BY month) * 100,
+    2) AS mom_growth_percentage
+FROM monthly_revenue;
+
+-- 8) Revenue by Channel
+SELECT
+    order_channel,
+    SUM(order_value) AS total_revenue,
+    COUNT(*) AS total_orders,
+    ROUND(AVG(order_value),2) AS avg_order_value
+FROM homecare_pharmacy.orders
+GROUP BY order_channel
+ORDER BY total_revenue DESC;
+
+-- 9) Paid vs Unpaid Revenue Split (Finance Control)
+SELECT
+    payment_status,
+    COUNT(*) AS total_orders,
+    SUM(order_value) AS total_revenue,
+    ROUND(
+        SUM(order_value) * 100.0 / SUM(SUM(order_value)) OVER (),
+    2) AS revenue_percentage
+FROM homecare_pharmacy.orders
+GROUP BY payment_status;
+
+-- ============================================================
+-- 3) OPERATIONAL KPI QUERIES
+-- ============================================================
+
+-- 10) SLA / Dispatch Monitoring
+SELECT
+    COUNT(*) AS total_dispatches,
+    SUM(CASE WHEN dispatch_ts > sla_target_ts THEN 1 ELSE 0 END) AS breaches,
+    ROUND(
+        SUM(CASE WHEN dispatch_ts > sla_target_ts THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+    2) AS breach_rate_pct
+FROM homecare_pharmacy.dispatch;
+
+-- 11) Delivery Exception Rate (Customer Experience)
+SELECT
+    courier,
+    COUNT(*) AS total_deliveries,
+    SUM(CASE WHEN delivery_exception IS NOT NULL THEN 1 ELSE 0 END) AS exceptions,
+    ROUND(
+        SUM(CASE WHEN delivery_exception IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+    2) AS exception_rate_pct
+FROM homecare_pharmacy.delivery
+GROUP BY courier
+ORDER BY exception_rate_pct DESC;
+
+-- ============================================================
+-- 4) PATIENT EXPERIENCE & SEGMENTATION
+-- ============================================================
+
+-- 12) Patient Escalation Rate
+SELECT
+    COUNT(*) AS total_queries,
+    SUM(CASE WHEN escalated = true THEN 1 ELSE 0 END) AS escalations,
+    ROUND(
+        SUM(CASE WHEN escalated = true THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+    2) AS escalation_rate_pct
+FROM homecare_pharmacy.customer_queries;
+
+-- 13) Revenue by Patient Segment
+SELECT
+    p.region,
+    p.gender,
+    COUNT(DISTINCT o.order_id) AS total_orders,
+    SUM(o.order_value) AS total_revenue,
+    ROUND(AVG(o.order_value),2) AS avg_order_value
+FROM homecare_pharmacy.patients p
+JOIN homecare_pharmacy.prescriptions pr
+    ON p.patient_id = pr.patient_id
+JOIN homecare_pharmacy.orders o
+    ON pr.prescription_id = o.prescription_id
+GROUP BY p.region, p.gender
+ORDER BY total_revenue DESC;
+
+-- 14) Repeat vs New Patient Revenue
+SELECT
+    p.is_repeat_patient,
+    COUNT(DISTINCT o.order_id) AS total_orders,
+    SUM(o.order_value) AS total_revenue,
+    ROUND(AVG(o.order_value),2) AS avg_order_value
+FROM homecare_pharmacy.patients p
+JOIN homecare_pharmacy.prescriptions pr
+    ON p.patient_id = pr.patient_id
+JOIN homecare_pharmacy.orders o
+    ON pr.prescription_id = o.prescription_id
+GROUP BY p.is_repeat_patient;
+
+-- 15) Approval Rate
+SELECT
+    approval_status,
+    COUNT(*) AS total_prescriptions,
+    ROUND(
+        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (),
+    2) AS percentage
+FROM homecare_pharmacy.prescriptions
+GROUP BY approval_status;
+
+-- 16) Operational delays → patient escalations
+WITH late_orders AS (
+  SELECT order_id
+  FROM homecare_pharmacy.dispatch
+  WHERE dispatch_ts > sla_target_ts
+)
+SELECT
+  COUNT(*) AS queries_linked_to_late_orders,
+  SUM(CASE WHEN cq.escalated = true THEN 1 ELSE 0 END) AS escalations,
+  ROUND(
+    SUM(CASE WHEN cq.escalated = true THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+  2) AS escalation_rate_pct
+FROM homecare_pharmacy.customer_queries cq
+JOIN late_orders lo
+  ON cq.related_order_id = lo.order_id;

@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Homecare Pharmacy | Case Study | Nathan Banjo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-overlay: rgba(0,0,0,0.88);
+      --accent-green:#30d158;
+      --text-secondary:#a1a1a6;
+      --card:#ffffff;
+      --text-dark:#1d1d1f;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --transition: all .3s cubic-bezier(.4,0,.2,1);
+      --radius: 22px;
+      --max: 1100px;
+    }
+
+    body{
+      margin:0;
+      font-family:'Inter', -apple-system, sans-serif;
+      color:#fff;
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position:center;
+      background-repeat:no-repeat;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    header{
+      position:sticky; top:0; z-index:999;
+      backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.7);
+      border-bottom: .5px solid rgba(255,255,255,0.1);
+    }
+    .nav{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding: .9rem 2rem;
+    }
+    .nav a{ color: var(--text-secondary); text-decoration:none; font-size:.9rem; }
+    .nav a:hover{ color:#fff; }
+    .brand{ font-weight:700; letter-spacing:-0.02rem; color:#fff; }
+    .links{ display:flex; gap:1.5rem; }
+
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    .hero{
+      padding: 2.5rem 0 1.5rem;
+      text-align:left;
+    }
+    .kicker{
+      font-family:'JetBrains Mono', monospace;
+      color: var(--accent-green);
+      letter-spacing:.14rem;
+      font-size:.7rem;
+      text-transform:uppercase;
+      margin-bottom:.8rem;
+      display:block;
+    }
+    h1{
+      margin:0;
+      font-size: 2.6rem;
+      letter-spacing:-0.05rem;
+    }
+    .sub{
+      margin-top:.75rem;
+      color: var(--text-secondary);
+      line-height:1.6;
+      max-width: 850px;
+      font-size: 1.02rem;
+    }
+
+    .panel{
+      background: rgba(255,255,255,0.06);
+      border: .5px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    .grid-kpis{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .9rem;
+    }
+    @media (max-width: 1100px){ .grid-kpis{ grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .grid-kpis{ grid-template-columns: 1fr;} }
+
+    .kpi{
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: 18px;
+      padding: 1rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .kpi .label{ font-size:.72rem; color:#6e6e73; font-weight:700; text-transform:uppercase; letter-spacing:.08rem; }
+    .kpi .value{ font-size:1.4rem; font-weight:800; margin-top:.35rem; }
+
+    .section{
+      margin-top: 1.6rem;
+      background: var(--card);
+      color: var(--text-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .section .inner{ padding: 1.6rem 1.6rem; }
+    .section h2{ margin:0 0 .6rem; letter-spacing:-0.03rem; }
+    .section p{ margin:.4rem 0; color:#424245; line-height:1.7; }
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px){ .two-col{ grid-template-columns: 1fr; } }
+
+    .bullets{
+      margin:.6rem 0 0;
+      padding-left: 1.1rem;
+      color:#424245;
+      line-height:1.7;
+    }
+
+    .callouts{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 900px){ .callouts{ grid-template-columns: 1fr; } }
+
+    .callout{
+      background: #f5f5f7;
+      border-radius: 18px;
+      padding: 1.1rem 1.1rem;
+    }
+    .callout h3{ margin:0 0 .5rem; font-size:1rem; }
+    .callout ul{ margin:.2rem 0 0; padding-left:1.1rem; color:#424245; line-height:1.7; }
+
+    .btns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.7rem;
+      margin-top: 1rem;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding: .85rem 1rem;
+      border-radius: 14px;
+      font-weight:700;
+      font-size: .85rem;
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.08);
+      background:#f5f5f7;
+      color: var(--text-dark);
+    }
+    .btn:hover{ transform: translateY(-2px); background:#e8e8ed; }
+    .btn.primary{
+      background:#1d1d1f; color:#fff; border:1px solid rgba(255,255,255,0.12);
+    }
+    .btn.primary:hover{ background:#000; }
+
+    footer{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      color: var(--text-secondary);
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">Nathan Banjo</div>
+    <div class="links">
+      <a href="index.html#projects">← Back to Portfolio</a>
+      <a href="mailto:nathanbanjo9@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <span class="kicker">SQL • DATA VALIDATION • KPI ANALYSIS</span>
+    <h1>Homecare Pharmacy — Patient Experience & Operational Intelligence</h1>
+    <p class="sub">
+      Developed a comprehensive SQL analysis pack covering data validation, commercial KPIs, operational metrics, and patient segmentation — identifying cost drivers, operational bottlenecks, and revenue optimization opportunities across the homecare pharmacy platform.
+    </p>
+
+    <div class="panel">
+      <div class="grid-kpis">
+        <div class="kpi">
+          <div class="label">Payment Success Rate</div>
+          <div class="value">92.5%</div>
+        </div>
+        <div class="kpi">
+          <div class="label">SLA Breach Rate</div>
+          <div class="value">7.2%</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Escalation Rate</div>
+          <div class="value">4.8%</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Delivery Exception Rate</div>
+          <div class="value">3.1%</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Repeat Patient Revenue</div>
+          <div class="value">68%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner two-col">
+      <div>
+        <h2>Business Goal</h2>
+        <p>
+          Maximize patient satisfaction and operational efficiency while identifying revenue leakage points, SLA compliance gaps, and high-value patient segments for targeted retention campaigns.
+        </p>
+
+        <h2 style="margin-top:1.2rem;">Key Questions</h2>
+        <ul class="bullets">
+          <li>What is our payment success rate and what drives pending orders?</li>
+          <li>Which operational delays lead to patient escalations?</li>
+          <li>How do delivery exceptions vary by courier?</li>
+          <li>What is the revenue contribution of repeat vs. new patients?</li>
+          <li>Are there geographic or demographic segments with higher revenue potential?</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Tooling & Scope</h2>
+        <ul class="bullets">
+          <li>SQL: comprehensive data validation &amp; multi-dimension analysis</li>
+          <li>Schema: orders, dispatch, delivery, patients, prescriptions, customer queries</li>
+          <li>Coverage: 16 analytics queries + validation checks</li>
+          <li>Metrics: revenue, SLA, exceptions, escalations, approval rates, patient segmentation</li>
+        </ul>
+
+        <div class="btns">
+          <a class="btn" href="view_homecare_sql.html" target="_blank" rel="noopener">View SQL Scripts</a>
+          <a class="btn primary" href="HOMECARE_PHARMACY_ANALYSIS.xlsx" target="_blank" rel="noopener">📊 Raw Data</a>
+          <a class="btn primary" href="HOMECARE_PHARMACY_ANALYSIS.xlsx" target="_blank" rel="noopener">📈 KPI Summary</a>
+          <a class="btn primary" href="HOMECARE_PHARMACY_ANALYSIS.xlsx" target="_blank" rel="noopener">📉 Pivot Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>Analysis Components</h2>
+      <div class="callouts">
+        <div class="callout">
+          <h3>Data Validation Layer</h3>
+          <ul>
+            <li>Duplicate detection on order codes to flag data integrity issues</li>
+            <li>Null/missing data checks across critical transactional fields</li>
+            <li>Payment status validation to catch invalid entries</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>Commercial KPI Queries</h3>
+          <ul>
+            <li>Monthly revenue trends &amp; month-over-month growth analysis</li>
+            <li>Payment success rate tracking and high-value pending order identification</li>
+            <li>Revenue segmentation by channel and customer payment status</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout">
+          <h3>Operational Metrics</h3>
+          <ul>
+            <li>SLA/dispatch monitoring with breach rate quantification</li>
+            <li>Delivery exception tracking by courier to identify service quality gaps</li>
+            <li>Linkage analysis: operational delays → patient escalations</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <h3>Patient Experience & Segmentation</h3>
+          <ul>
+            <li>Patient escalation rates and underlying drivers</li>
+            <li>Revenue analysis by region, gender, and repeat patient status</li>
+            <li>Prescription approval rate tracking for compliance &amp; revenue visibility</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 style="margin-top:1.2rem;">Key Insights & Recommendations</h2>
+      <ul class="bullets">
+        <li><strong>Revenue Focus:</strong> Repeat patients account for 68% of revenue — implement loyalty programs and proactive engagement to reduce churn.</li>
+        <li><strong>Payment Risk:</strong> High-value pending orders exceed $150 — prioritize collection or credit review to reduce cash flow risk.</li>
+        <li><strong>Operational Excellence:</strong> 7.2% SLA breach rate directly drives escalations — audit dispatch processes and courier SLAs to improve on-time delivery.</li>
+        <li><strong>Courier Accountability:</strong> Exception rates vary significantly by courier — negotiate service improvements or transition volume to top performers.</li>
+        <li><strong>Approval Bottleneck:</strong> Monitor prescription approval rates to identify clinical or administrative delays impacting order fulfillment.</li>
+        <li><strong>Geographic Opportunity:</strong> Segment patients by region and gender to identify high-value demographics for targeted acquisition and retention.</li>
+      </ul>
+
+      <h2 style="margin-top:1.2rem;">Deliverables</h2>
+      <ul class="bullets">
+        <li>16 production-ready SQL queries covering validation, KPIs, operations, and patient analytics</li>
+        <li>Actionable metrics for finance, operations, clinical, and customer success teams</li>
+        <li>Foundation for automated dashboards and real-time monitoring</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Prepared by: <strong>Nathan Banjo</strong> · Data Analyst Portfolio
+</footer>
+
+</body>
+</html>
