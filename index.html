@@ -119,7 +119,7 @@
  }
  .pill.primary:hover{ filter: brightness(0.98); }
  
- /* --- Project Grid (3 cards on one row) --- */
+ /* --- Project Grid (Simple 3-Column Layout) --- */
  .grid{
  max-width: var(--maxw);
  margin: 0 auto;
@@ -128,6 +128,24 @@
   grid-template-columns: repeat(3, 1fr);
  gap: 1.6rem;
  align-items: stretch;
+ }
+ 
+ .feature{
+  background: var(--card-white);
+  border-radius: 28px;
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  color: var(--text-dark);
+  height: 100%;
+  box-shadow: var(--shadow);
+ }
+ 
+ .feature:hover{
+ transform: translateY(-8px);
+ box-shadow: var(--shadow-hover);
  }
  
  @media (max-width: 1200px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
@@ -139,14 +157,12 @@
  
  .feature{
  background: var(--card-white);
- border-radius: 28px;
  overflow: hidden;
  display: flex;
  flex-direction: column;
  transition: var(--transition);
  color: var(--text-dark);
  height: 100%;
- box-shadow: var(--shadow);
  border: 1px solid rgba(0,0,0,0.06);
  }
  
@@ -316,7 +332,23 @@
  
  <div class="grid" id="projects">
 
- <!-- Homecare Pharmacy -->
+ <!-- Effective Energy Group - Most Detailed (1,080,000+ records, Full case study, SQL + Excel + Power BI) -->
+ <article class="feature">
+ <div class="img-container"><img src="IMAGES/Effective Energy Logo.png" alt="Effective Energy Group"></div>
+ <div class="content">
+ <span class="badge">SQL • EXCEL • POWER BI</span>
+ <h3>Effective Energy Group</h3>
+ <p>End-to-end operational analytics covering workforce cost structure, overtime analysis, installation productivity, and regional performance across 1,080,000+ records. Built to surface cost reduction opportunities and support operational decision-making.</p>
+ </div>
+ <div class="card-actions">
+ <a href="case_effective_energy.html" class="btn-skill btn-main">Full Case Study</a>
+ <a href="case_effective_energy.html#excel" class="btn-skill">Excel</a>
+ <a href="view_effective_energy_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
+ <a href="case_effective_energy.html#pbi" class="btn-skill">Power BI Dashboard</a>
+ </div>
+ </article>
+
+ <!-- Homecare Pharmacy - Comprehensive (Full case study, SQL + Excel + Power BI) -->
  <article class="feature">
  <div class="img-container"><img src="IMAGES/ChatGPT Image Feb 25, 2026 at 01_48_42 PM.png" alt="Homecare Pharmacy"></div>
  <div class="content">
@@ -332,7 +364,54 @@
  </div>
  </article>
 
-  <!-- Retail FP&A & Margin Leakage -->
+ <!-- TechNova - Detailed (Full case study, SQL + Excel + Tableau) -->
+ <article class="feature">
+ <div class="img-container"><img src="IMAGES/Unknown-1.jpeg" alt="TechNova Workforce"></div>
+ <div class="content">
+ <span class="badge">SQL • EXCEL • TABLEAU</span>
+ <h3>TechNova Workforce</h3>
+ <p>HR attrition analysis identifying turnover drivers by department, satisfaction, income band, and role to improve retention.</p>
+ </div>
+ <div class="card-actions">
+ <a href="https://public.tableau.com/views/dashboard1_17652135025530/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+ <a href="case_technova.html" class="btn-skill">Case Study</a>
+ <a href="view_technova_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
+ <a href="TechNova_HR_Attrition_Dashboard.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
+ </div>
+ </article>
+
+ <!-- Choco De Luxe - Detailed (Full case study, SQL + Excel + Tableau) -->
+ <article class="feature">
+ <div class="img-container"><img src="IMAGES/Unknown-2.jpeg" alt="Choco De Luxe"></div>
+ <div class="content">
+ <span class="badge">SQL • EXCEL • TABLEAU</span>
+ <h3>Choco De Luxe</h3>
+ <p>Sales and delivery performance analysis across seven markets, with channel-level insights and product demand trends.</p>
+ </div>
+ <div class="card-actions">
+ <a href="https://public.tableau.com/views/NearlyFinished/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+ <a href="case_choco.html" class="btn-skill">Case Study</a>
+ <a href="view_choco_sql.html" target="_blank" class="btn-skill">SQL Script</a>
+ <a href="Choco_de_Luxe_Data.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
+ </div>
+ </article>
+
+ <!-- UrbanEdge - Moderate (Case study, SQL + Tableau) -->
+ <article class="feature">
+ <div class="img-container"><img src="IMAGES/Unknown.jpeg" alt="UrbanEdge Retail"></div>
+ <div class="content">
+ <span class="badge">SQL • TABLEAU</span>
+ <h3>UrbanEdge Retail</h3>
+ <p>Influencer performance intelligence to evaluate engagement, ROI, pricing, and platform value for marketing decisions.</p>
+ </div>
+ <div class="card-actions">
+ <a href="https://public.tableau.com/views/COMPLETED_17651461595980/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
+ <a href="case_urbanedge.html" class="btn-skill">Case Study</a>
+ <a href="view_urbanedge_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
+ </div>
+ </article>
+
+ <!-- Retail FP&A & Margin Leakage - Focused (Power BI + FP&A Analysis) -->
 <article class="feature">
   <div class="img-container">
     <img src="IMAGES/northstar_retail_group_logo.png.png" alt="Retail FP&A & Margin Leakage Dashboard">
@@ -358,23 +437,7 @@
   </div>
 </article>
 
- <!-- Choco De Luxe -->
- <article class="feature">
- <div class="img-container"><img src="IMAGES/Unknown-2.jpeg" alt="Choco De Luxe"></div>
- <div class="content">
- <span class="badge">SQL • EXCEL • TABLEAU</span>
- <h3>Choco De Luxe</h3>
- <p>Sales and delivery performance analysis across seven markets, with channel-level insights and product demand trends.</p>
- </div>
- <div class="card-actions">
- <a href="https://public.tableau.com/views/NearlyFinished/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
- <a href="case_choco.html" class="btn-skill">Case Study</a>
- <a href="view_choco_sql.html" target="_blank" class="btn-skill">SQL Script</a>
- <a href="Choco_de_Luxe_Data.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
- </div>
- </article>
-
- <!-- NovaMed -->
+ <!-- NovaMed - Least Detailed (Power BI Focus Only) -->
  <article class="feature">
  <div class="img-container"><img src="IMAGES/NOVAMED 2.png" alt="NovaMed BI Capstone"></div>
  <div class="content">
@@ -385,37 +448,6 @@
  <div class="card-actions">
  <a href="NovaMed_Dashboard.pdf" target="_blank" class="btn-skill btn-main">View Power BI Dashboard (PDF Export)</a>
  <a href="case_novamed.html" class="btn-skill">Case Study</a>
- </div>
- </article>
-
- <!-- TechNova -->
- <article class="feature">
- <div class="img-container"><img src="IMAGES/Unknown-1.jpeg" alt="TechNova Workforce"></div>
- <div class="content">
- <span class="badge">SQL • EXCEL • TABLEAU</span>
- <h3>TechNova Workforce</h3>
- <p>HR attrition analysis identifying turnover drivers by department, satisfaction, income band, and role to improve retention.</p>
- </div>
- <div class="card-actions">
- <a href="https://public.tableau.com/views/dashboard1_17652135025530/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
- <a href="case_technova.html" class="btn-skill">Case Study</a>
- <a href="view_technova_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
- <a href="TechNova_HR_Attrition_Dashboard.pdf" target="_blank" class="btn-skill">Excel Dashboard PDF</a>
- </div>
- </article>
-
- <!-- UrbanEdge -->
- <article class="feature">
- <div class="img-container"><img src="IMAGES/Unknown.jpeg" alt="UrbanEdge Retail"></div>
- <div class="content">
- <span class="badge">SQL • TABLEAU</span>
- <h3>UrbanEdge Retail</h3>
- <p>Influencer performance intelligence to evaluate engagement, ROI, pricing, and platform value for marketing decisions.</p>
- </div>
- <div class="card-actions">
- <a href="https://public.tableau.com/views/COMPLETED_17651461595980/Dashboard1" target="_blank" class="btn-skill btn-main">Interactive Tableau Dashboard</a>
- <a href="case_urbanedge.html" class="btn-skill">Case Study</a>
- <a href="view_urbanedge_sql.html" target="_blank" class="btn-skill">SQL Scripts</a>
  </div>
  </article>
  
