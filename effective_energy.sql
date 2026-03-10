@@ -1,0 +1,254 @@
+CREATE TABLE effective_energy_operations (
+    employee_id VARCHAR(10),
+    region VARCHAR(50),
+    department VARCHAR(50),
+    role VARCHAR(50),
+    month VARCHAR(7),
+    hourly_rate NUMERIC(6,2),
+    hours_worked NUMERIC(6,1),
+    overtime_hours NUMERIC(6,1),
+    install_jobs_completed INT,
+    travel_cost NUMERIC(8,2),
+    equipment_cost NUMERIC(8,2),
+    base_wage_cost NUMERIC(10,2),
+    overtime_cost NUMERIC(10,2),
+    total_wage_cost NUMERIC(10,2),
+    total_operational_cost NUMERIC(10,2)
+);
+
+SELECT COUNT(*) FROM effective_energy_operations;
+SELECT * FROM effective_energy_operations LIMIT 10;
+
+QUERY 1 - Total Operational Cost by Region
+SELECT 
+    region,
+    ROUND(SUM(total_operational_cost)::NUMERIC, 2) AS total_op_cost
+FROM effective_energy_operations
+GROUP BY region
+ORDER BY total_op_cost DESC;
+
+QUERY 2 - Total Wage Cost by Region
+SELECT 
+    region,
+    ROUND(SUM(base_wage_cost)::NUMERIC, 2) AS total_base_wage,
+    ROUND(SUM(overtime_cost)::NUMERIC, 2) AS total_overtime,
+    ROUND(SUM(total_wage_cost)::NUMERIC, 2) AS total_wage
+FROM effective_energy_operations
+GROUP BY region
+ORDER BY total_wage DESC;
+
+QUERY 3 — Overtime % of Total Wages
+SELECT 
+    region,
+    ROUND(SUM(overtime_cost) * 100.0 / SUM(total_wage_cost), 2) AS overtime_pct
+FROM effective_energy_operations
+GROUP BY region
+ORDER BY overtime_pct DESC;
+
+
+QUERY 4 — Cost Per Installation by Region
+SELECT 
+    region,
+    SUM(install_jobs_completed) AS total_installs,
+    ROUND(SUM(total_operational_cost) / SUM(install_jobs_completed), 2) AS cost_per_install
+FROM effective_energy_operations
+GROUP BY region
+ORDER BY cost_per_install DESC;
+
+
+QUERY 5 — Average Hourly Rate by Role
+SELECT 
+    role,
+    ROUND(AVG(hourly_rate)::NUMERIC, 2) AS avg_hourly_rate
+FROM effective_energy_operations
+GROUP BY role
+ORDER BY avg_hourly_rate DESC;
+
+
+QUERY 6 — Overtime Trend by Month
+SELECT 
+    month,
+    ROUND(SUM(overtime_hours)::NUMERIC, 0) AS total_overtime_hours,
+    ROUND(SUM(overtime_cost)::NUMERIC, 2) AS total_overtime_cost
+FROM effective_energy_operations
+GROUP BY month
+ORDER BY month;
+
+
+QUERY 7 — Department Cost Breakdown
+SELECT 
+    department,
+    ROUND(AVG(hourly_rate)::NUMERIC, 2) AS avg_hourly_rate,
+    ROUND(SUM(total_wage_cost)::NUMERIC, 2) AS total_wage_cost,
+    ROUND(SUM(total_operational_cost)::NUMERIC, 2) AS total_op_cost
+FROM effective_energy_operations
+GROUP BY department
+ORDER BY total_op_cost DESC;
+
+
+QUERY 8 — Productivity by Role
+SELECT 
+    role,
+    SUM(install_jobs_completed) AS total_installs,
+    ROUND(AVG(install_jobs_completed)::NUMERIC, 1) AS avg_installs_per_month,
+    ROUND(SUM(total_wage_cost) / NULLIF(SUM(install_jobs_completed), 0), 2) AS wage_cost_per_install
+FROM effective_energy_operations
+GROUP BY role
+ORDER BY total_installs DESC;
+
+
+QUERY 9 — Travel Cost vs Labour Cost by Region
+
+SELECT 
+    region,
+    ROUND(SUM(travel_cost)::NUMERIC, 2) AS total_travel,
+    ROUND(SUM(total_wage_cost)::NUMERIC, 2) AS total_wages,
+    ROUND(SUM(travel_cost) * 100.0 / SUM(total_operational_cost), 2) AS travel_pct_of_total
+FROM effective_energy_operations
+GROUP BY region
+ORDER BY travel_pct_of_total DESC;
+
+
+QUERY 10 — Top 10 Highest Cost Employees
+SELECT 
+    employee_id,
+    region,
+    role,
+    ROUND(SUM(total_operational_cost)::NUMERIC, 2) AS total_cost
+FROM effective_energy_operations
+GROUP BY employee_id, region, role
+ORDER BY total_cost DESC
+LIMIT 10;
+
+QUERY 11 — Rank Regions by Cost Per Installation
+WITH region_costs AS (
+    SELECT 
+        region,
+        SUM(total_operational_cost) AS total_cost,
+        SUM(install_jobs_completed) AS total_installs,
+        ROUND(SUM(total_operational_cost) / SUM(install_jobs_completed), 2) AS cost_per_install
+    FROM effective_energy_operations
+    GROUP BY region
+)
+SELECT 
+    region,
+    cost_per_install,
+    RANK() OVER (ORDER BY cost_per_install DESC) AS cost_rank
+FROM region_costs;
+
+
+QUERY 12 — Month on Month Overtime Cost Change
+WITH monthly_overtime AS (
+    SELECT 
+        month,
+        ROUND(SUM(overtime_cost)::NUMERIC, 2) AS total_overtime_cost
+    FROM effective_energy_operations
+    GROUP BY month
+)
+SELECT 
+    month,
+    total_overtime_cost,
+    LAG(total_overtime_cost) OVER (ORDER BY month) AS prev_month_cost,
+    ROUND(total_overtime_cost - LAG(total_overtime_cost) OVER (ORDER BY month), 2) AS month_on_month_change
+FROM monthly_overtime
+ORDER BY month;
+
+
+QUERY 13 — Cumulative Wage Cost by Month
+SELECT 
+    month,
+    ROUND(SUM(total_wage_cost)::NUMERIC, 2) AS monthly_wage_cost,
+    ROUND(SUM(SUM(total_wage_cost)) OVER (ORDER BY month)::NUMERIC, 2) AS cumulative_wage_cost
+FROM effective_energy_operations
+GROUP BY month
+ORDER BY month;
+
+
+QUERY 14 — Flag High Overtime Employees
+WITH employee_overtime AS (
+    SELECT 
+        employee_id,
+        region,
+        role,
+        ROUND(SUM(overtime_hours)::NUMERIC, 1) AS total_overtime_hours,
+        ROUND(SUM(overtime_cost)::NUMERIC, 2) AS total_overtime_cost,
+        ROUND(SUM(overtime_cost) * 100.0 / SUM(total_wage_cost), 2) AS overtime_pct
+    FROM effective_energy_operations
+    GROUP BY employee_id, region, role
+)
+SELECT *
+FROM employee_overtime
+WHERE overtime_pct > 20
+ORDER BY overtime_pct DESC
+LIMIT 20;
+
+
+QUERY 15 — Regional Performance Scorecard
+WITH scorecard AS (
+    SELECT 
+        region,
+        ROUND(SUM(total_operational_cost)::NUMERIC, 2) AS total_cost,
+        SUM(install_jobs_completed) AS total_installs,
+        ROUND(SUM(total_operational_cost) / SUM(install_jobs_completed), 2) AS cost_per_install,
+        ROUND(SUM(overtime_cost) * 100.0 / SUM(total_wage_cost), 2) AS overtime_pct,
+        ROUND(SUM(travel_cost) * 100.0 / SUM(total_operational_cost), 2) AS travel_pct
+    FROM effective_energy_operations
+    GROUP BY region
+)
+SELECT *,
+    RANK() OVER (ORDER BY cost_per_install ASC) AS efficiency_rank,
+    RANK() OVER (ORDER BY overtime_pct ASC) AS overtime_rank,
+    RANK() OVER (ORDER BY total_installs DESC) AS volume_rank
+FROM scorecard
+ORDER BY efficiency_rank;
+
+
+QUERY 16 — Identify Departments Running Over Average Cost
+WITH dept_costs AS (
+    SELECT 
+        department,
+        ROUND(AVG(total_operational_cost)::NUMERIC, 2) AS avg_cost
+    FROM effective_energy_operations
+    GROUP BY department
+),
+overall_avg AS (
+    SELECT ROUND(AVG(total_operational_cost)::NUMERIC, 2) AS company_avg
+    FROM effective_energy_operations
+)
+SELECT 
+    d.department,
+    d.avg_cost,
+    o.company_avg,
+    ROUND(d.avg_cost - o.company_avg, 2) AS variance_from_avg,
+    CASE 
+        WHEN d.avg_cost > o.company_avg THEN 'Above Average'
+        ELSE 'Below Average'
+    END AS cost_status
+FROM dept_costs d
+CROSS JOIN overall_avg o
+ORDER BY variance_from_avg DESC;
+
+
+QUERY 17 — Best and Worst Performing Region Per Department
+WITH dept_region AS (
+    SELECT 
+        department,
+        region,
+        ROUND(SUM(total_operational_cost) / SUM(install_jobs_completed), 2) AS cost_per_install,
+        RANK() OVER (PARTITION BY department ORDER BY SUM(total_operational_cost) / SUM(install_jobs_completed) ASC) AS best_rank,
+        RANK() OVER (PARTITION BY department ORDER BY SUM(total_operational_cost) / SUM(install_jobs_completed) DESC) AS worst_rank
+    FROM effective_energy_operations
+    WHERE install_jobs_completed > 0
+    GROUP BY department, region
+)
+SELECT 
+    department,
+    region,
+    cost_per_install,
+    CASE 
+        WHEN best_rank = 1 THEN 'Most Efficient'
+        WHEN worst_rank = 1 THEN 'Least Efficient'
+    END AS performance_flag
+FROM dept_region
+WHERE best_rank = 1 OR worst_rank = 1
+ORDER BY department;
