@@ -1,0 +1,1154 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Next Plc — Retail BI and Analytics Suite | Nathan Banjo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #050608;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.10);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.70);
+      --muted2: rgba(255,255,255,0.55);
+      --accent: #30d158;
+      --shadow: 0 18px 60px rgba(0,0,0,0.45);
+      --shadow2: 0 16px 40px rgba(48, 209, 88, 0.12);
+      --radius: 26px;
+      --radius2: 18px;
+      --maxw: 1120px;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body{
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(48,209,88,0.10), transparent 60%),
+        radial-gradient(900px 650px at 90% 15%, rgba(48,209,88,0.08), transparent 55%),
+        linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.88)),
+        url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Nav */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(18px);
+      background: rgba(0,0,0,0.68);
+      border-bottom: 0.5px solid rgba(255,255,255,0.10);
+    }
+    .topbar-inner{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0.9rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand{
+      display: inline-flex;
+      gap: .7rem;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 750;
+      letter-spacing: -0.02rem;
+    }
+    .brand .tag{
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+    }
+    .navlinks{
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .navlinks a{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      transition: 0.25s;
+    }
+    .navlinks a:hover{ color: #fff; }
+
+    /* Page container */
+    .wrap{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 2.2rem 1.6rem 4.5rem;
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 0.65rem;
+      padding: 2.2rem 0 0.9rem;
+      position: relative;
+    }
+    .hero::before{
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      right: -50px;
+      bottom: -50px;
+      background: radial-gradient(ellipse at center, rgba(48,209,88,0.03) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .kicker{
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+      position: relative;
+    }
+    .kicker::after{
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+    .hero h1{
+      margin: 0.55rem 0 0;
+      font-size: 2.85rem;
+      letter-spacing: -0.06rem;
+      line-height: 1.05;
+      text-shadow: 0 16px 60px rgba(0,0,0,0.55);
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p{
+      margin: 0.9rem 0 0;
+      color: var(--muted);
+      font-size: 1.03rem;
+      line-height: 1.6;
+      max-width: 920px;
+    }
+
+    /* KPI grid */
+    .kpis{
+      margin-top: 1.45rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+    @media (max-width: 980px){ .kpis{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px){ .kpis{ grid-template-columns: 1fr; } }
+
+    .kpi{
+      background: rgba(255,255,255,0.92);
+      color: #0b0c0f;
+      border-radius: 18px;
+      padding: 1rem 1.05rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .kpi .label{
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12rem;
+      text-transform: uppercase;
+      opacity: 0.70;
+      margin-bottom: 0.25rem;
+    }
+    .kpi .value{
+      font-size: 1.55rem;
+      font-weight: 850;
+      letter-spacing: -0.03rem;
+    }
+    .kpi .sub{
+      margin-top: 0.25rem;
+      font-size: 0.78rem;
+      opacity: 0.70;
+    }
+
+    /* Two-column section layout */
+    .grid2{
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    @media (max-width: 900px){ .grid2{ grid-template-columns: 1fr; } }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), rgba(48,209,88,0.3));
+    }
+    .panel h2{
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: -0.02rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .panel p{
+      margin: 0.8rem 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .bullets{
+      margin: 0.8rem 0 0;
+      padding-left: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .linkbox{
+      background: rgba(255,255,255,0.94);
+      color: #0b0c0f;
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 1.25rem;
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+    }
+    .linkbox::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #007aff, #5856d6);
+    }
+    .linkbox h3{
+      margin: 0;
+      font-size: 1.08rem;
+      letter-spacing: -0.02rem;
+      color: #0b0c0f;
+      font-weight: 800;
+    }
+    .btnrow{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      text-decoration: none;
+      padding: 0.78rem 0.95rem;
+      border-radius: 14px;
+      font-weight: 850;
+      font-size: 0.86rem;
+      transition: 0.25s;
+      border: 1px solid rgba(0,0,0,0.10);
+    }
+    .btn.primary{
+      background: #111216;
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn.primary:hover{ background: #000; transform: translateY(-1px); }
+    .btn.ghost{
+      background: #f4f5f7;
+      color: #111216;
+    }
+    .btn.ghost:hover{ background: #e9eaee; transform: translateY(-1px); }
+
+    .project-meta {
+      margin-bottom: 2rem;
+    }
+    .meta-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, rgba(0,122,255,0.03) 0%, rgba(88,86,214,0.03) 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(0,122,255,0.08);
+      transition: all 0.3s ease;
+    }
+    .meta-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,122,255,0.1);
+      border-color: rgba(0,122,255,0.15);
+    }
+    .meta-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+    }
+    .meta-content h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0b0c0f;
+      letter-spacing: -0.01rem;
+    }
+    .meta-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: rgba(11,12,15,0.8);
+    }
+    .portfolio-actions h4 {
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0b0c0f;
+      letter-spacing: -0.01rem;
+    }
+
+    .note{
+      margin-top: 0.85rem;
+      background: rgba(0,0,0,0.06);
+      border-radius: 14px;
+      padding: 0.85rem;
+      font-size: 0.88rem;
+      color: rgba(11,12,15,0.75);
+      line-height: 1.5;
+    }
+
+    .section{
+      margin-top: 1rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .section::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), rgba(48,209,88,0.3));
+    }
+    .section h2{
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: -0.02rem;
+      color: #fff;
+      font-weight: 800;
+      position: relative;
+    }
+    .section h2::after{
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0.8;
+    }
+
+    .cards{
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+    @media (max-width: 860px){ .cards{ grid-template-columns: 1fr; } }
+
+    .mini{
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 1rem 1rem;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .mini::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), rgba(48,209,88,0.5));
+      opacity: 0.7;
+    }
+    .mini:hover{
+      background: rgba(0,0,0,0.4);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .mini .title{
+      font-weight: 850;
+      letter-spacing: -0.01rem;
+      margin: 0;
+      color: #fff;
+    }
+    .mini .meta{
+      margin-top: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.95;
+    }
+    .mini ul{
+      margin: 0.7rem 0 0;
+      padding-left: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 0.95rem;
+    }
+
+    .imggrid{
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+    }
+    @media (max-width: 860px){ .imggrid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px){ .imggrid{ grid-template-columns: 1fr; } }
+
+    figure{
+      margin: 0;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      background: rgba(0,0,0,0.4);
+    }
+    figure img{
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    figcaption{
+      padding: 0.8rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .footer{
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--muted2);
+      font-size: 0.9rem;
+    }
+    .footer a{
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+    }
+    .footer a:hover{ color: #fff; }
+
+    .section h3{
+      margin: 0.8rem 0 0.5rem;
+      color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .section, .panel, .linkbox, .finding, .rec, .lim, .phase, .mini{
+      animation: fadeInUp 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+    .section:nth-child(1){ animation-delay: 0.1s; }
+    .section:nth-child(2){ animation-delay: 0.2s; }
+    .section:nth-child(3){ animation-delay: 0.3s; }
+    .section:nth-child(4){ animation-delay: 0.4s; }
+    .section:nth-child(5){ animation-delay: 0.5s; }
+    .section:nth-child(6){ animation-delay: 0.6s; }
+
+    @keyframes fadeInUp{
+      from{ opacity: 0; transform: translateY(20px); }
+      to{ opacity: 1; transform: translateY(0); }
+    }
+
+    .kpi{
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      color: #0b0c0f;
+      border-radius: 18px;
+      padding: 1rem 1.05rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #25c639);
+    }
+
+    .findings{
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 860px){ .findings{ grid-template-columns: 1fr; } }
+
+    .finding{
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius2);
+      padding: 1.2rem;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .finding::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+    .finding:hover{
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+    .finding h4{
+      margin: 0 0 0.6rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01rem;
+    }
+    .finding p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
+    .recommendations{
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+
+    .rec{
+      background: rgba(48,209,88,0.08);
+      border: 1px solid rgba(48,209,88,0.15);
+      border-radius: var(--radius2);
+      padding: 1.2rem;
+      transition: 0.3s;
+      position: relative;
+    }
+    .rec:hover{
+      background: rgba(48,209,88,0.12);
+      border-color: rgba(48,209,88,0.25);
+      transform: translateY(-1px);
+    }
+    .rec h4{
+      margin: 0 0 0.6rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.01rem;
+    }
+    .rec p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
+    .limitations{
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 860px){ .limitations{ grid-template-columns: 1fr; } }
+
+    .lim{
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius2);
+      padding: 1.2rem;
+      transition: 0.3s;
+    }
+    .lim:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.1);
+    }
+    .lim h4{
+      margin: 0 0 0.4rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01rem;
+    }
+    .lim p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.88rem;
+      font-style: italic;
+    }
+
+    .roadmap{
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 860px){ .roadmap{ grid-template-columns: 1fr; } }
+
+    .phase{
+      background: rgba(0,122,255,0.08);
+      border: 1px solid rgba(0,122,255,0.15);
+      border-radius: var(--radius2);
+      padding: 1.2rem;
+      transition: 0.3s;
+      position: relative;
+    }
+    .phase:hover{
+      background: rgba(0,122,255,0.12);
+      border-color: rgba(0,122,255,0.25);
+      transform: translateY(-1px);
+    }
+    .phase h4{
+      margin: 0 0 0.6rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #007aff;
+      letter-spacing: -0.01rem;
+    }
+    .phase p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary{
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #000;
+      padding: 0.8rem 1.4rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.02rem;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover{
+      background: #25c639;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(48,209,88,0.3);
+    }
+
+    /* Lightbox modal for Python charts */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 3000;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow: auto;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-content {
+      max-width: 95vw;
+      max-height: 95vh;
+      background: #0f131a;
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: grid;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .lightbox-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .lightbox-caption {
+      color: #f5f5f7;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <span>Nathan Banjo</span>
+        <span class="tag">SQL • Excel • Power BI</span>
+      </a>
+      <nav class="navlinks">
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+        <a href="mailto:nathanbanjo9@gmail.com"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <div class="kicker">SQL • POWER BI • EXCEL • PYTHON • AZURE</div>
+      <h1>Next Plc — Retail BI and Analytics Suite</h1>
+      <p>End to end retail analytics covering SQL data modelling, Power BI dashboards with RLS, Excel financial modelling, Python forecasting and Azure cloud architecture — built across 800,000 transactions simulating the BI environment of a major UK fashion retailer.</p>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">TOTAL REVENUE</div>
+          <div class="value">£206.5M</div>
+          <div class="sub">Across all channels</div>
+        </div>
+        <div class="kpi">
+          <div class="label">TOTAL ORDERS</div>
+          <div class="value">800,000</div>
+          <div class="sub">2022 to 2024</div>
+        </div>
+        <div class="kpi">
+          <div class="label">GROSS MARGIN</div>
+          <div class="value">57.69%</div>
+          <div class="sub">All categories</div>
+        </div>
+        <div class="kpi">
+          <div class="label">RETURN RATE</div>
+          <div class="value">12.06%</div>
+          <div class="sub">96,474 returns</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2" id="business-context">
+      <div class="panel">
+        <h2>Business Goal</h2>
+        <h3>Project Summary</h3>
+        <p>Next Plc is one of the UK's largest fashion and homeware retailers operating across in-store, online, Next App and Next Directory channels. This project simulates the analytical environment of a BI Analyst at Next, building a complete end to end reporting solution covering financial performance, returns analysis, regional intelligence and revenue forecasting across 800,000 synthetic transactions from 2022 to 2024.</p>
+
+        <h3>Key Questions</h3>
+        <ul class="bullets">
+          <li>Which product categories and channels drive the most revenue and margin?</li>
+          <li>What is the true cost of returns and where is margin leaking?</li>
+          <li>How does discount rate impact gross profit across categories?</li>
+          <li>Which regions are outperforming and underperforming?</li>
+          <li>What does the revenue forecast look like for the next 6 months?</li>
+        </ul>
+
+        <h3>Dataset</h3>
+        <ul class="bullets">
+          <li>800,000 synthetic retail orders across 5 categories and 4 channels</li>
+          <li>80,000 customers, 2,000 products, 120 stores, 10 UK regions</li>
+          <li>3 years of data from January 2022 to December 2024</li>
+          <li>Generated using Python (pandas, faker, numpy)</li>
+        </ul>
+
+        <h3>Tools Used</h3>
+        <ul class="bullets">
+          <li>PostgreSQL — data validation, star schema design and 22 analytical queries</li>
+          <li>Power BI Desktop — 3 page dashboard, 12 DAX measures, RLS, date intelligence</li>
+          <li>Excel 365 — Power Query ETL, KPI summary, pivot dashboard, scenario model</li>
+          <li>Python — matplotlib and scikit-learn for 6 charts and linear regression forecast</li>
+          <li>Azure — full cloud architecture design covering ADF, ADLS Gen2, Synapse, Databricks</li>
+        </ul>
+      </div>
+
+      <aside class="linkbox">
+        <div class="project-meta">
+          <div class="meta-item">
+            <div class="meta-icon"><i class="fas fa-database"></i></div>
+            <div class="meta-content"><h4>Dataset</h4><p>800,000 synthetic orders · 80,000 customers · 2,000 products · 120 stores · 10 regions</p></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon"><i class="fas fa-tools"></i></div>
+            <div class="meta-content"><h4>Tools</h4><p>PostgreSQL · Power BI · Excel · Python · Azure</p></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="meta-content"><h4>Coverage</h4><p>Star schema, RLS, 22 SQL queries, 12 DAX measures, 3 dashboard pages</p></div>
+          </div>
+        </div>
+
+        <div class="portfolio-actions">
+          <h4>Portfolio Links</h4>
+          <div class="btnrow">
+            <a class="btn primary" href="case_next_plc.html#excel" style="border: none; cursor: pointer; background: #111216; color: #fff;"><i class="fas fa-file-excel"></i> Excel Workbook</a>
+            <a class="btn ghost" href="view_next_plc_sql.html" target="_blank" rel="noopener"><i class="fas fa-code"></i> SQL Scripts</a>
+            <a class="btn primary" href="Next_Plc.pdf" target="_blank" style="border: none; cursor: pointer; background: #111216; color: #fff;"><i class="fas fa-chart-line"></i> Power BI Dashboard</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>Analysis Structure</h2>
+      <h3>How the Analysis Was Built</h3>
+      <p>Full multi-tool approach with distinct phases for data modelling, interactive reporting, scenario planning, and predictive forecasting.</p>
+
+      <div class="cards">
+        <div class="mini"><div class="title">Block 1 — PostgreSQL: SQL Foundation</div><div class="meta">DATA MODELING · ANALYSIS</div><ul><li>800,000 row dataset across 5 tables — orders, returns, products, customers, stores</li><li>22 queries across 4 layers — validation, commercial KPIs, advanced analytics, window functions</li><li>RANK(), LAG(), PARTITION BY, CTEs, stored procedures and cross joins</li><li>Data validation checks for nulls, duplicates and revenue integrity</li><li>Regional performance scorecard with multi-metric simultaneous ranking</li></ul></div>
+        <div class="mini"><div class="title">Block 2 — Power BI: Interactive Dashboard</div><div class="meta">REPORTING · DAX · RLS</div><ul><li>Page 1 Executive Overview — KPI cards, revenue by channel, revenue by category, monthly trend</li><li>Page 2 Sales Performance — matrix, top 10 products, YoY growth, regional bar chart</li><li>Page 3 Returns and Margin — return rate trend, return reasons, scatter chart, insights panel</li><li>Row Level Security for Regional Manager and Executive roles</li><li>12 DAX measures including SAMEPERIODLASTYEAR, TOTALYTD, DIVIDE and CALCULATE</li></ul></div>
+        <div class="mini"><div class="title">Block 3 — Excel: Financial Workbook</div><div class="meta">KPI MODELLING · SCENARIOS</div><ul><li>RAW_DATA sheet — 800,000 rows loaded via Power Query</li><li>KPI Summary — 13 headline metrics using SUMIF, COUNTIF, SUMPRODUCT</li><li>Pivot Dashboard — 3 connected pivot tables with category, year and channel slicers</li><li>Scenario Model — interactive what-if discount impact model with input/output cells</li></ul></div>
+        <div class="mini"><div class="title">Block 4 — Python: Analytical Charts</div><div class="meta">FORECASTING · VISUALS</div><ul><li>6 charts using matplotlib and scikit-learn</li><li>Monthly revenue trend with shaded area fill</li><li>Revenue by category + return rate with average line</li><li>Revenue by channel pie chart and YoY growth bar chart</li><li>Linear regression forecast 6 months into 2025</li></ul></div>
+        <div class="mini"><div class="title">Block 5 — Azure: Cloud Architecture</div><div class="meta">PIPELINE ARCHITECTURE</div><ul><li>Enterprise data pipeline diagram</li><li>Sources: POS, e-commerce, directory, app</li><li>Ingestion: Azure Data Factory</li><li>Storage: ADLS Gen2, Azure SQL Database</li><li>Processing: Synapse + Databricks; reporting: Power BI Service</li></ul></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Azure Architecture Diagram</h2>
+      <h3>Enterprise Data Pipeline Flow</h3>
+      <p>This data architecture diagram shows how a company like Next Plc moves data from source systems (POS, e-commerce, app directory) through Azure services and into reporting solutions. It represents a real enterprise cloud environment design:</p>
+      <ul class="bullets">
+        <li>Data ingestion from source systems into Azure Data Factory (ADF)</li>
+        <li>Raw storage in ADLS Gen2 (raw zone), processed storage in Azure SQL Database</li>
+        <li>Analytics processing in Azure Synapse and Databricks</li>
+        <li>Reporting in Power BI Service with RLS and SSRS reporting outputs</li>
+      </ul>
+
+      <div class="imggrid">
+        <figure>
+          <img src="/IMAGES/Untitled Diagram.drawio.png" alt="Next Plc Azure Architecture Diagram" data-caption="Azure end-to-end data flow from sources to Power BI with ADLS, Synapse, Databricks, and ADLS Gen2." onclick="openAzureLightbox(this)">
+          <figcaption>This is a data architecture diagram showing how a company like Next Plc moves data from source systems through Azure to reporting in a real enterprise cloud environment.</figcaption>
+        </figure>
+      </div>
+
+      <div class="lightbox azure-lightbox" id="azureLightbox" onclick="if(event.target===this){closeAzureLightbox()}" >
+        <div class="lightbox-content">
+          <button class="lightbox-close" onclick="closeAzureLightbox()">&times;</button>
+          <img id="azureLightboxImage" src="" alt="">
+          <div class="lightbox-caption" id="azureLightboxCaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Excel KPI Summary</h2>
+      <h3>Financial & Channel Metrics</h3>
+      <p>The primary KPI summary worksheet contains headline metrics across revenue, margin, returns, and channel mix in one consolidated dashboard.</p>
+
+      <div class="imggrid">
+        <figure>
+          <img src="Screenshot 2026-04-01 at 01.07.17.png" alt="Next Plc Excel KPI Summary" data-caption="KPI summary sheet with total orders, revenue, gross margin, channel mix and return metrics." onclick="openExcelLightbox(this)">
+          <figcaption>This is the Excel KPI summary sheet: 800,000 orders, £206.5M revenue, 57.69% gross margin, 12.06% return rate, and channel mix by revenue share.</figcaption>
+        </figure>
+        <figure>
+          <img src="Screenshot 2026-04-01 at 01.07.23.png" alt="Next Plc Excel Pivot Dashboard" data-caption="Pivot Dashboard sheet: 3 pivot tables with slicers for year, category, and channel showing revenue, margin, and return analysis." onclick="openExcelLightbox(this)">
+          <figcaption>Excel Pivot Dashboard with dynamic slicers for year/category/channel, showing layered revenue, margin, and return KPI cross-tabs in one view.</figcaption>
+        </figure>
+        <figure>
+          <img src="Screenshot 2026-04-01 at 01.08.43.png" alt="Next Plc Excel Scenario Model" data-caption="Scenario model sheet showing discount impact and margin scenarios as interactive input/output fields." onclick="openExcelLightbox(this)">
+          <figcaption>Scenario model sheet showing discount impact and margin output: adjusts with yellow input cells and calculates adjusted revenue, gross profit, and break-even orders.</figcaption>
+        </figure>
+      </div>
+
+      <div class="lightbox excel-lightbox" id="excelLightbox" onclick="if(event.target===this){closeExcelLightbox()}" >
+        <div class="lightbox-content">
+          <button class="lightbox-close" onclick="closeExcelLightbox()">&times;</button>
+          <img id="excelLightboxImage" src="" alt="">
+          <div class="lightbox-caption" id="excelLightboxCaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Power BI Dashboard Screenshots</h2>
+      <h3>Row Level Security Demo</h3>
+      <p>These screenshots show the Power BI report view with RLS applied as a demonstration for the Regional Manager role.</p>
+
+      <div class="imggrid">
+        <figure>
+          <img src="IMAGES/Screenshot 2026-04-01 at 01.37.59.png" alt="Next Plc Power BI RLS Dashboard" data-caption="Row Level Security in action — Dashboard filtered to London region only using the Regional Manager role. Total revenue restricted to £20.80M — demonstrating RLS working correctly across all visuals." onclick="openPowerBILightbox(this)">
+          <figcaption>Row Level Security in action — Dashboard filtered to London region only using the Regional Manager role. Total revenue restricted to £20.80M — demonstrating RLS working correctly across all visuals.</figcaption>
+        </figure>
+      </div>
+
+      <div class="lightbox powerbi-lightbox" id="powerbiLightbox" onclick="if(event.target===this){closePowerBILightbox()}" >
+        <div class="lightbox-content">
+          <button class="lightbox-close" onclick="closePowerBILightbox()">&times;</button>
+          <img id="powerbiLightboxImage" src="" alt="">
+          <div class="lightbox-caption" id="powerbiLightboxCaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Python Charts</h2>
+      <h3>Analytical Visualization Outputs</h3>
+      <p>Visual results from Python charting and forecasting for the project (matplotlib + scikit-learn).</p>
+
+      <div class="imggrid">
+        <figure>
+          <img src="01_monthly_revenue_trend.png" alt="Monthly Revenue Trend" data-caption="Month-on-month revenue trend with shaded area highlighting seasonality." onclick="openChartLightbox(this)">
+          <figcaption>Month-on-month revenue trend with shaded area highlighting seasonality.</figcaption>
+        </figure>
+        <figure>
+          <img src="02_revenue_by_category.png" alt="Revenue by Category" data-caption="Revenue distribution across product categories." onclick="openChartLightbox(this)">
+          <figcaption>Revenue distribution across product categories.</figcaption>
+        </figure>
+        <figure>
+          <img src="03_return_rate_by_category.png" alt="Return Rate by Category" data-caption="Return rate by category with overlay of margin impact." onclick="openChartLightbox(this)">
+          <figcaption>Return rate by category with overlay of margin impact.</figcaption>
+        </figure>
+        <figure>
+          <img src="04_revenue_by_channel.png" alt="Revenue by Channel" data-caption="Channel performance comparison for in-store, online, app, and directory." onclick="openChartLightbox(this)">
+          <figcaption>Channel performance comparison for in-store, online, app, and directory.</figcaption>
+        </figure>
+        <figure>
+          <img src="05_yoy_growth_by_category.png" alt="YOY Growth by Category" data-caption="Year-over-year revenue growth by category." onclick="openChartLightbox(this)">
+          <figcaption>Year-over-year revenue growth by category.</figcaption>
+        </figure>
+        <figure>
+          <img src="06_revenue_forecast.png" alt="Revenue Forecast" data-caption="Linear regression growth forecast into 2025." onclick="openChartLightbox(this)">
+          <figcaption>Linear regression growth forecast into 2025.</figcaption>
+        </figure>
+      </div>
+
+      <div class="lightbox" id="chartLightbox" onclick="if(event.target===this){closeChartLightbox()}" >
+        <div class="lightbox-content">
+          <button class="lightbox-close" onclick="closeChartLightbox()">&times;</button>
+          <img id="lightboxImage" src="" alt="">
+          <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Key Findings</h2>
+      <h3>Data-Driven Insights</h3>
+      <p>Five principal insights from the end-to-end analysis.</p>
+
+      <div class="findings">
+        <div class="finding"><h4>01 Revenue Growth Profile</h4><p>Revenue stable at £206.5M but growth is decelerating — Womenswear declined 1.6% in 2022-2023 before recovering to 2.0% growth in 2023-2024.</p></div>
+        <div class="finding"><h4>02 Channel Mix</h4><p>Channel mix is almost perfectly equal at 25% across all four channels suggesting digital channels may be underperforming their growth potential.</p></div>
+        <div class="finding"><h4>03 Returns Risk</h4><p>Returns represent a £24.9M revenue risk with Better price elsewhere cited in 17% of all returns — a direct pricing competitiveness signal.</p></div>
+        <div class="finding"><h4>04 Margin Pressure</h4><p>Gross margin holds at 57.69% but £17.5M annual discount impact creates material profit risk if promotional strategy is not carefully managed.</p></div>
+        <div class="finding"><h4>05 Regional Performance</h4><p>North West leads regional revenue at £21M with broadly even national distribution across all 10 regions.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Recommendations</h2>
+      <h3>Action Plan</h3>
+      <p>Five tactical recommendations aligned to business questions and findings.</p>
+
+      <div class="recommendations">
+        <div class="rec"><h4>01 Womenswear Subcategory Review</h4><p>Investigate Womenswear subcategory decline through product level analysis and competitor benchmarking.</p></div>
+        <div class="rec"><h4>02 Dynamic Pricing</h4><p>Implement dynamic pricing review to address the 17% of returns citing better price elsewhere.</p></div>
+        <div class="rec"><h4>03 Digital Channel Investment</h4><p>Accelerate Next App and Next Directory investment to shift revenue toward higher margin digital channels.</p></div>
+        <div class="rec"><h4>04 Margin Control Dashboard</h4><p>Introduce monthly margin monitoring dashboard with early warning thresholds at 55% gross margin.</p></div>
+        <div class="rec"><h4>05 Returns Reduction Program</h4><p>Build a returns reduction programme starting with Home category root cause analysis by product, courier and region.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Limitations</h2>
+      <h3>Scope Constraints</h3>
+      <p>Important analytical boundaries and validation notes.</p>
+
+      <div class="limitations">
+        <div class="lim"><h4>Synthetic Dataset</h4><p>Synthetic dataset — real operational data would require validation against live POS and ERP systems.</p></div>
+        <div class="lim"><h4>Margin Depth</h4><p>No margin data at product level — analysis uses category level gross margin only.</p></div>
+        <div class="lim"><h4>Customer Lifetime Value</h4><p>No customer lifetime value modelling — repeat purchase behaviour not tracked at cohort level.</p></div>
+        <div class="lim"><h4>Conceptual Architecture</h4><p>Azure architecture is conceptual — not a live deployed pipeline.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Future Improvements</h2>
+      <h3>Next Steps</h3>
+      <p>Roadmap for delivering production-grade BI capabilities.</p>
+
+      <div class="roadmap">
+        <div class="phase"><h4>Live Data Integration</h4><p>Connect to live Azure SQL Database and implement automated ADF pipeline refresh.</p></div>
+        <div class="phase"><h4>Customer Analytics</h4><p>Build customer cohort retention and lifetime value model.</p></div>
+        <div class="phase"><h4>Dynamic Pricing Engine</h4><p>Develop dynamic pricing recommendation engine using historical discount and return data.</p></div>
+        <div class="phase"><h4>Power BI Service Adoption</h4><p>Migrate Power BI to Power BI Service with scheduled refresh and row level security enforcement.</p></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Built by <strong>Nathan Banjo</strong> • Data Analyst • SQL + Power BI + Excel + Python + Azure • <a href="mailto:nathanbanjo9@gmail.com">nathanbanjo9@gmail.com</a>
+    </div>
+
+  </main>
+
+  <script>
+    function openChartLightbox(img) {
+      const lightbox = document.getElementById('chartLightbox');
+      const lightboxImage = document.getElementById('lightboxImage');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt || 'Chart preview';
+      lightboxCaption.textContent = img.dataset.caption || img.alt || '';
+      lightbox.classList.add('open');
+      // Scroll up by half viewport height to bring lightbox into view
+      window.scrollBy(0, -window.innerHeight / 2);
+    }
+
+    function closeChartLightbox() {
+      const lightbox = document.getElementById('chartLightbox');
+      lightbox.classList.remove('open');
+    }
+
+    function openAzureLightbox(img) {
+      const lightbox = document.getElementById('azureLightbox');
+      const lightboxImage = document.getElementById('azureLightboxImage');
+      const lightboxCaption = document.getElementById('azureLightboxCaption');
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt || 'Chart preview';
+      lightboxCaption.textContent = img.dataset.caption || img.alt || '';
+      lightbox.classList.add('open');
+    }
+
+    function closeAzureLightbox() {
+      const lightbox = document.getElementById('azureLightbox');
+      lightbox.classList.remove('open');
+    }
+
+    function openExcelLightbox(img) {
+      const lightbox = document.getElementById('excelLightbox');
+      const lightboxImage = document.getElementById('excelLightboxImage');
+      const lightboxCaption = document.getElementById('excelLightboxCaption');
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt || 'Chart preview';
+      lightboxCaption.textContent = img.dataset.caption || img.alt || '';
+      lightbox.classList.add('open');
+    }
+
+    function closeExcelLightbox() {
+      const lightbox = document.getElementById('excelLightbox');
+      lightbox.classList.remove('open');
+    }
+
+    function openPowerBILightbox(img) {
+      const lightbox = document.getElementById('powerbiLightbox');
+      const lightboxImage = document.getElementById('powerbiLightboxImage');
+      const lightboxCaption = document.getElementById('powerbiLightboxCaption');
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt || 'Chart preview';
+      lightboxCaption.textContent = img.dataset.caption || img.alt || '';
+      lightbox.classList.add('open');
+    }
+
+    function closePowerBILightbox() {
+      const lightbox = document.getElementById('powerbiLightbox');
+      lightbox.classList.remove('open');
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeChartLightbox();
+        closeAzureLightbox();
+        closeExcelLightbox();
+        closePowerBILightbox();
+      }
+    });
+  </script>
+
+</body>
+</html>
