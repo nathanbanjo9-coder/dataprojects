@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Next Plc Excel Workbook | Nathan Banjo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #050608;
+      --panel: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.10);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.70);
+      --accent: #30d158;
+      --radius: 26px;
+      --maxw: 1120px;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body{
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(48,209,88,0.10), transparent 60%),
+        radial-gradient(900px 650px at 90% 15%, rgba(48,209,88,0.08), transparent 55%),
+        linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.88)),
+        url('IMAGES/unnamed.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Nav */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(18px);
+      background: rgba(0,0,0,0.68);
+      border-bottom: 0.5px solid rgba(255,255,255,0.10);
+    }
+    .topbar-inner{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0.9rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand{
+      display: inline-flex;
+      gap: .7rem;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 750;
+      letter-spacing: -0.02rem;
+    }
+    .navlinks{
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .navlinks a{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      transition: 0.25s;
+    }
+    .navlinks a:hover{ color: #fff; }
+
+    /* Page container */
+    .wrap{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 2rem 1.6rem 6rem;
+    }
+
+    h1{
+      margin: 0 0 0.5rem;
+      font-size: 2.4rem;
+      letter-spacing: -0.03rem;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .sub{
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .imggrid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    figure{
+      margin: 0;
+      text-align: center;
+    }
+
+    figure img{
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      display: block;
+    }
+
+    figcaption{
+      margin-top: 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    h2{
+      font-size: 1.8rem;
+      margin: 3rem 0 1rem;
+      letter-spacing: -0.02rem;
+    }
+
+    .footer{
+      text-align: center;
+      padding: 2rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 768px){
+      h1{ font-size: 1.8rem; }
+      .imggrid{ gap: 1.8rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="case_next_plc.html">
+        <span>← Back to Case Study</span>
+      </a>
+      <nav class="navlinks">
+        <a href="index.html"><i class="fas fa-home"></i> Portfolio</a>
+        <a href="mailto:nathanbanjo9@gmail.com"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="https://www.linkedin.com/in/nathan-banjo-579884392" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Excel Workbook Worksheets</h1>
+    <p class="sub">Next Plc Retail BI — Financial & Channel Metrics Dashboard</p>
+
+    <h2>KPI Summary</h2>
+    <p>Headline operational metrics, revenue breakdown, margin analysis, and channel mix distribution across all 800,000 orders.</p>
+
+    <div class="imggrid">
+      <figure>
+        <img src="Screenshot 2026-04-01 at 01.07.17.png" alt="Next Plc Excel KPI Summary">
+        <figcaption>This is the Excel KPI summary sheet: 800,000 orders, £206.5M revenue, 57.69% gross margin, 12.06% return rate, and channel mix by revenue share.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Pivot Dashboard</h2>
+    <p>Interactive analysis with dynamic slicers for year, category, and channel. Shows multi-dimensional revenue, margin, and return KPI analysis in cross-tabular format.</p>
+
+    <div class="imggrid">
+      <figure>
+        <img src="Screenshot 2026-04-01 at 01.07.23.png" alt="Next Plc Excel Pivot Dashboard">
+        <figcaption>Excel Pivot Dashboard with dynamic slicers for year/category/channel, showing layered revenue, margin, and return KPI cross-tabs in one view.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Scenario Model</h2>
+    <p>Interactive what-if analysis tool showing the impact of discount scenarios on gross profit, revenue, and break-even calculations.</p>
+
+    <div class="imggrid">
+      <figure>
+        <img src="Screenshot 2026-04-01 at 01.08.43.png" alt="Next Plc Excel Scenario Model">
+        <figcaption>Scenario model sheet showing discount impact and margin output: adjusts with yellow input cells and calculates adjusted revenue, gross profit, and break-even orders.</figcaption>
+      </figure>
+    </div>
+
+    <div class="footer">
+      Built by <strong>Nathan Banjo</strong> • Data Analyst • SQL + Excel + Power BI + Python + Azure • <a href="mailto:nathanbanjo9@gmail.com" style="color: var(--accent); text-decoration: none;">nathanbanjo9@gmail.com</a>
+    </div>
+
+  </main>
+
+</body>
+</html>
